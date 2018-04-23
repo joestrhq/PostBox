@@ -1,0 +1,3 @@
+#config.yml
+reset_file_on_start: false
+default_postbox_size: 9

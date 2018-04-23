@@ -1,0 +1,27 @@
+ name: PostBox
+ version: 1.0.0
+ description: PostBox - Ein Post-System.
+ author: joestr
+ authors: [joestr_, _joestr] 
+ website: https://repo.joestr.xyz/PostBox
+ 
+ main: xyz.joestr.postbox.PostBox
+ database: false
+ #depend: [WorldEdit, WorldGuard]
+ 
+ commands:
+   post:
+     description: Zeigt die untergeordneten Befehle vom "/post"-Befehl.
+     #permission: post.use
+     #permission-message: Du hast keine Berechtigung fuer den "/post"-Befehl.
+     usage: Benutze bitte den "/post"-Befehl.
+ 
+ permissions:
+   post.use:
+     description: Berechtigung fuer die untergeordneten Benutzer-Befehle vom "/post"-Befehl.
+     default: true
+   post.admin:
+     description: Berechtigung fuer die untergeordneten Benutzer- und Admin-Befehle vom "/post"-Befehl.
+     default: op
+     children:
+       post.use: true
