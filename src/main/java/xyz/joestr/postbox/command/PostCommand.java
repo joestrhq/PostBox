@@ -74,7 +74,7 @@ public class PostCommand implements CommandExecutor {
 											.getString(player.getName() + ".slot" + i + "sender"));
 								} else {
 									list.add(
-											"§2Absender: §6UnexpectedCall: java.lang.Thread(Unknown)$org.JavaPlugin.load(Unkown)$xyz.joestr.postbox.PostBox(Unknown)");
+											"§2Absender: §6?");
 								}
 
 								meta.setLore(list);
