@@ -1,5 +1,5 @@
  name: PostBox
- version: 1.0.0
+ version: ${project.version}
  description: PostBox - Ein Post-System.
  author: joestr
  authors: [joestr_, _joestr] 
