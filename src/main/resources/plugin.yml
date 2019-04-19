@@ -2,7 +2,7 @@
  version: ${project.version}
  description: PostBox - Ein Post-System.
  author: joestr
- authors: [joestr_, _joestr] 
+ authors: [2YB, 9YB, xandi3000] 
  website: https://repo.joestr.xyz/PostBox
  
  main: xyz.joestr.postbox.PostBox
