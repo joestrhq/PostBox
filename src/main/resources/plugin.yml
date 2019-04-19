@@ -5,7 +5,7 @@
  authors: [2YB, 9YB, xandi3000] 
  website: https://repo.joestr.xyz/PostBox
  
- main: xyz.joestr.postbox.PostBox
+ main: xyz.joestr.postbox.PostBoxPlugin
  database: false
  #depend: [WorldEdit, WorldGuard]
  
