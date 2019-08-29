@@ -27,11 +27,12 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
     private FileConfiguration postBox = null;
     private File postBoxFile = null;
     public Base64Objectifier<ItemStack> itemStackBase64
-        = new Base64Objectifier<ItemStack>(BukkitObjectOutputStream.class, BukkitObjectInputStream.class);
+        = new Base64Objectifier<>(BukkitObjectOutputStream.class, BukkitObjectInputStream.class);
 
+    @Override
     public void onEnable() {
-        getCommand("post").setExecutor(new CommandPost(this));
-        getCommand("post").setTabCompleter(new TabCompleterPost(this));
+        this.getCommand("post").setExecutor(new CommandPost(this));
+        this.getCommand("post").setTabCompleter(new TabCompleterPost(this));
 
         new InventoryClickListener(this);
         new PlayerJoinListener(this);
@@ -57,6 +58,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
         }
     }
 
+    @Override
     public void onDisable() {
     }
 

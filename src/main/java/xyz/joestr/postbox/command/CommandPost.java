@@ -34,8 +34,8 @@ public class CommandPost implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("§2--- PostBox ---");
-            sender.sendMessage("§6Dieser Befehl kann nur von Spielern ausgeführt werden!");
+            sender.sendMessage("Â§2--- PostBox ---");
+            sender.sendMessage("Â§6Dieser Befehl kann nur von Spielern ausgefÃ¼hrt werden!");
             return true;
         }
 
@@ -54,8 +54,8 @@ public class CommandPost implements CommandExecutor {
             // /post open
             if (arg.length == 1) {
                 if (!player.hasPermission("post.use")) {
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Du hast keine Berechtigung.");
+                    player.sendMessage("Â§2--- PostBox ---");
+                    player.sendMessage("Â§6Du hast keine Berechtigung.");
                     return true;
                 }
 
@@ -68,8 +68,8 @@ public class CommandPost implements CommandExecutor {
                 }
 
                 if (counter == 0) {
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Deine PostBox ist leer.");
+                    player.sendMessage("Â§2--- PostBox ---");
+                    player.sendMessage("Â§6Deine PostBox ist leer.");
                     return true;
                 }
 
@@ -78,7 +78,7 @@ public class CommandPost implements CommandExecutor {
                 ItemStack itemstack = null;
                 Inventory localInventory = player.getPlayer().getServer().createInventory(
                     null,
-                    this.plugin.getConfig().getInt("default_postbox_size"), "§6[§2PostBox§6]"
+                    this.plugin.getConfig().getInt("default_postbox_size"), "Â§6[Â§2PostBoxÂ§6]"
                 );
 
                 for (int i = 0; i < counter; i++) {
@@ -94,11 +94,11 @@ public class CommandPost implements CommandExecutor {
                     List<String> list = new ArrayList<String>();
                     String str = this.plugin.getbox().getString(player.getUniqueId().toString() + ".slot" + i + "sender");
                     if (str != null) {
-                        list.add("§2Absender: §6"
+                        list.add("Â§2Absender: Â§6"
                             + Bukkit.getOfflinePlayer(UUID.fromString(this.plugin.getbox().getString(player.getUniqueId().toString() + ".slot" + i + "sender"))).getName());
                     } else {
                         list.add(
-                            "§2Absender: §6?");
+                            "Â§2Absender: Â§6?");
                     }
 
                     meta.setLore(list);
@@ -114,8 +114,8 @@ public class CommandPost implements CommandExecutor {
             // /post open <Player>
             if (arg.length == 2) {
                 if (!player.hasPermission("post.admin")) {
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Du hast keine Berechtigung.");
+                    player.sendMessage("Â§2--- PostBox ---");
+                    player.sendMessage("Â§6Du hast keine Berechtigung.");
                     return true;
                 }
 
@@ -125,8 +125,8 @@ public class CommandPost implements CommandExecutor {
                 OfflinePlayer receiver = Bukkit.getOfflinePlayer(arg[1]);
 
                 if (!receiver.hasPlayedBefore()) {
-                    sender.sendMessage("§2--- PostBox ---");
-                    sender.sendMessage("§2" + arg[1] + " §6hat noch nie zuvor auf diesem Server gespielt.");
+                    sender.sendMessage("Â§2--- PostBox ---");
+                    sender.sendMessage("Â§2" + arg[1] + " Â§6hat noch nie zuvor auf diesem Server gespielt.");
                     return true;
                 }
 
@@ -137,8 +137,8 @@ public class CommandPost implements CommandExecutor {
                 }
 
                 if (counter == 0) {
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Die PostBox von §2" + receiver.getName() + " §6ist leer.");
+                    player.sendMessage("Â§2--- PostBox ---");
+                    player.sendMessage("Â§6Die PostBox von Â§2" + receiver.getName() + " Â§6ist leer.");
                     return true;
                 }
 
@@ -147,7 +147,7 @@ public class CommandPost implements CommandExecutor {
                 ItemStack itemstack = null;
                 Inventory localInventory = player.getPlayer().getServer().createInventory(
                     null,
-                    this.plugin.getConfig().getInt("default_postbox_size"), "§6[§2PostBox§6]"
+                    this.plugin.getConfig().getInt("default_postbox_size"), "Â§6[Â§2PostBoxÂ§6]"
                 );
 
                 for (int i = 0; i < counter; i++) {
@@ -162,7 +162,7 @@ public class CommandPost implements CommandExecutor {
                     ItemMeta meta = itemstack.getItemMeta();
 
                     List<String> list = new ArrayList<String>();
-                    list.add("§2Absender: §6"
+                    list.add("Â§2Absender: Â§6"
                         + Bukkit.getOfflinePlayer(UUID.fromString(this.plugin.getbox().getString(receiver.getUniqueId().toString() + ".slot" + i + "sender"))).getName());
                     meta.setLore(list);
                     itemstack.setItemMeta(meta);
@@ -186,14 +186,14 @@ public class CommandPost implements CommandExecutor {
             // /post send <Player>
             if (arg.length == 2) {
                 if (!player.hasPermission("post.use") && !player.hasPermission("post.admin")) {
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Du hast keine Berechtigung.");
+                    player.sendMessage("Â§2--- PostBox ---");
+                    player.sendMessage("Â§6Du hast keine Berechtigung.");
                     return true;
                 }
 
                 if (player.getName().equals(arg[1])) {
-                    sender.sendMessage("§2--- PostBox ---");
-                    sender.sendMessage("§6Du kannst dir selbst keine Post senden.");
+                    sender.sendMessage("Â§2--- PostBox ---");
+                    sender.sendMessage("Â§6Du kannst dir selbst keine Post senden.");
                     return true;
                 }
 
@@ -201,8 +201,8 @@ public class CommandPost implements CommandExecutor {
                 OfflinePlayer receiver = Bukkit.getOfflinePlayer(arg[1]);
 
                 if (!receiver.hasPlayedBefore()) {
-                    sender.sendMessage("§2--- PostBox ---");
-                    sender.sendMessage("§2" + arg[1] + " §6hat noch nie zuvor auf diesem Server gespielt.");
+                    sender.sendMessage("Â§2--- PostBox ---");
+                    sender.sendMessage("Â§2" + arg[1] + " Â§6hat noch nie zuvor auf diesem Server gespielt.");
                     return true;
                 }
 
@@ -222,8 +222,8 @@ public class CommandPost implements CommandExecutor {
                     try {
                         player.getInventory().clear(player.getInventory().first(itemstack));
                     } catch (Exception e) {
-                        player.sendMessage("§2--- PostBox ---");
-                        player.sendMessage("§6Du kannst nichts Leeres verschicken.");
+                        player.sendMessage("Â§2--- PostBox ---");
+                        player.sendMessage("Â§6Du kannst nichts Leeres verschicken.");
                         return true;
                     }
 
@@ -232,8 +232,8 @@ public class CommandPost implements CommandExecutor {
                     this.plugin.getbox().set(receiver.getUniqueId().toString() + ".slot" + counter + "sender", player.getUniqueId().toString());
                     this.plugin.savebox();
 
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Du hast Post an §2" + arg[1] + " §6verschickt.");
+                    player.sendMessage("Â§2--- PostBox ---");
+                    player.sendMessage("Â§6Du hast Post an Â§2" + arg[1] + " Â§6verschickt.");
 
                     if (receiver.isOnline()) {
                         if ((receiver.getPlayer().hasPermission("post.use"))
@@ -241,7 +241,7 @@ public class CommandPost implements CommandExecutor {
                             receiver.getPlayer().spigot().sendMessage(
                                 new ComponentBuilder("--- PostBox --- (Optionen anklickbar)")
                                     .color(ChatColor.DARK_GREEN)
-                                    .append("\n>> Du hast Post erhalten. Klicke hier um deine PostBox zu öffnen.")
+                                    .append("\n>> Du hast Post erhalten. Klicke hier um deine PostBox zu Â§ffnen.")
                                     .color(ChatColor.GOLD)
                                     .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                                         new ComponentBuilder("/post open")
@@ -259,8 +259,8 @@ public class CommandPost implements CommandExecutor {
                     return true;
                 }
 
-                player.sendMessage("§2--- PostBox ---");
-                player.sendMessage("§6Die PostBox von §2" + arg[1] + " §6ist voll.");
+                player.sendMessage("Â§2--- PostBox ---");
+                player.sendMessage("Â§6Die PostBox von Â§2" + arg[1] + " Â§6ist voll.");
                 return true;
 
             }
@@ -278,13 +278,13 @@ public class CommandPost implements CommandExecutor {
             if (mode.equalsIgnoreCase("*")) {
                 player.spigot().sendMessage(
                     new ComponentBuilder("--- PostBox --- (Optionen anklickbar)").color(ChatColor.DARK_GREEN)
-                        .append("\n>> Deine PostBox öffnen.").color(ChatColor.GOLD)
+                        .append("\n>> Deine PostBox Â§ffnen.").color(ChatColor.GOLD)
                         .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                             new ComponentBuilder("/post open").color(ChatColor.DARK_GREEN).create()))
                         .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/post open")).create());
                 if (player.hasPermission("post.admin")) {
                     player.spigot().sendMessage(
-                        new ComponentBuilder(">> PostBox eines Spielers öffnen.").color(ChatColor.GOLD)
+                        new ComponentBuilder(">> PostBox eines Spielers Â§ffnen.").color(ChatColor.GOLD)
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                                 new ComponentBuilder("/post open <Spieler>").color(ChatColor.DARK_GREEN)
                                     .create()))
@@ -299,13 +299,13 @@ public class CommandPost implements CommandExecutor {
             } else if (mode.equalsIgnoreCase("open")) {
                 player.spigot().sendMessage(
                     new ComponentBuilder("--- PostBox --- (Optionen anklickbar)").color(ChatColor.DARK_GREEN)
-                        .append("\n>> Deine PostBox öffnen.").color(ChatColor.GOLD)
+                        .append("\n>> Deine PostBox Â§ffnen.").color(ChatColor.GOLD)
                         .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                             new ComponentBuilder("/post open").color(ChatColor.DARK_GREEN).create()))
                         .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/post open")).create());
                 if (player.hasPermission("post.admin")) {
                     player.spigot().sendMessage(
-                        new ComponentBuilder(">> PostBox eines Spielers öffnen.").color(ChatColor.GOLD)
+                        new ComponentBuilder(">> PostBox eines Spielers Â§ffnen.").color(ChatColor.GOLD)
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                                 new ComponentBuilder("/post open <Spieler>").color(ChatColor.DARK_GREEN)
                                     .create()))
@@ -321,8 +321,8 @@ public class CommandPost implements CommandExecutor {
                         .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/post send ")).create());
             }
         } else {
-            player.sendMessage("§2--- PostBox ---");
-            player.sendMessage("§6Du hast keine Berechtigung.");
+            player.sendMessage("Â§2--- PostBox ---");
+            player.sendMessage("Â§6Du hast keine Berechtigung.");
         }
     }
 }

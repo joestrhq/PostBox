@@ -1,31 +1,192 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
     <modelVersion>4.0.0</modelVersion>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+    
     <groupId>xyz.joestr</groupId>
     <artifactId>postbox</artifactId>
     <version>0.1.10-SNAPSHOT</version>
+    
+    <name>PostBox</name>
+    <description>Sending items to other players.</description>
+    <url>https://joestr.github.io/PostBox/</url>
+    <inceptionYear>2016</inceptionYear>
+    
+    <organization>
+        <name>joestr</name>
+        <url>https://www.joestr.xyz</url>
+    </organization>
+    
+    <licenses>
+        <license>
+            <name>X11 license</name>
+            <distribution>repo</distribution>
+            <url>https://github.com/joestr/PostBox/blob/master/LICENSE</url>
+            <!--<comments></comments>-->
+        </license>
+    </licenses>
+    
+    <developers>
+        <developer>
+            <id>joestr</id>
+            <name>Joel Strasser</name>
+            <email>strasser999@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <url>https://www.joestr.xyz</url>
+            <organization>joestr</organization>
+            <organizationUrl>https://www.joestr.xyz</organizationUrl>
+        </developer>
+    </developers>
+    
+    <contributors>
+        <contributor>
+            <name>Joel Strasser</name>
+            <email>strasser999@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <url>https://www.joestr.xyz</url>
+            <organization>joestr</organization>
+            <organizationUrl>https://www.joestr.xyz</organizationUrl>
+        </contributor>
+    </contributors>
+    
+    <scm>
+        <url>https://github.com/joestr/PostBox/</url>
+        <connection>scm:git:https://github.com/joestr/PostBox.git</connection>
+        <developerConnection>scm:git:https://github.com/joestr/PostBox.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    
+    <ciManagement>
+        <url>https://ci.joestr.xyz/job/PostBox/</url>
+        <system>jenkins</system>
+        <notifiers>
+            <notifier>
+                <type>mail</type>
+                <sendOnSuccess>false</sendOnSuccess>
+                <sendOnWarning>true</sendOnWarning>
+                <sendOnError>true</sendOnError>
+                <sendOnFailure>true</sendOnFailure>
+                <configuration>
+                    <address>strasser999@gmail.com</address>
+                </configuration>
+            </notifier>
+        </notifiers>
+    </ciManagement>
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>Sonatype Central Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <name>Sonatype Central Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+    
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/joestr/ZoneMenu/issues</url>
+    </issueManagement>
+    
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>joestr-repository</id>
+            <name>joestr's Maven Repository</name>
+            <url>https://mvn-repo.joestr.xyz/repository/repository/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
+    
     <dependencies>
         <!--Spigot API-->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.13.2-R0.1-SNAPSHOT</version>
+            <type>jar</type>
             <scope>provided</scope>
         </dependency>
     </dependencies>
+    
+    <pluginRepositories>
+        <pluginRepository>
+            <id>joestr-repository</id>
+            <name>joestr's Maven Repository</name>
+            <url>https://mvn-repo.joestr.xyz/repository/repository/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    
     <build>
         <resources>
             <resource>
-                <directory>
-                    src/main/resources
-                </directory>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
