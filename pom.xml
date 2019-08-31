@@ -104,9 +104,8 @@
     
     <repositories>
         <repository>
-            <id>joestr-repository</id>
-            <name>joestr's Maven Repository</name>
-            <url>https://mvn-repo.joestr.xyz/repository/repository/</url>
+            <id>maven-repository-public</id>
+            <url>https://mvn-repo.joestr.xyz/repository/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -129,9 +128,8 @@
     
     <pluginRepositories>
         <pluginRepository>
-            <id>joestr-repository</id>
-            <name>joestr's Maven Repository</name>
-            <url>https://mvn-repo.joestr.xyz/repository/repository/</url>
+            <id>maven-repository-public</id>
+            <url>https://mvn-repo.joestr.xyz/repository/public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
