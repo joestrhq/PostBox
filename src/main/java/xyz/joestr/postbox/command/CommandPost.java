@@ -34,8 +34,7 @@ public class CommandPost implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("§2--- PostBox ---");
-            sender.sendMessage("§6Dieser Befehl kann nur von Spielern ausgeführt werden!");
+            sender.sendMessage(ChatColor.RED + "Dieser Befehl kann nur von Spielern ausgeführt werden!");
             return true;
         }
 
@@ -54,8 +53,7 @@ public class CommandPost implements CommandExecutor {
             // /post open
             if (arg.length == 1) {
                 if (!player.hasPermission("post.use")) {
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Du hast keine Berechtigung.");
+                    player.sendMessage(ChatColor.Red + "Du hast keine Berechtigung.");
                     return true;
                 }
 
@@ -68,8 +66,7 @@ public class CommandPost implements CommandExecutor {
                 }
 
                 if (counter == 0) {
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Deine PostBox ist leer.");
+                    player.sendMessage(ChatColor.AQUA + "Deine PostBox ist leer.");
                     return true;
                 }
 
@@ -114,8 +111,7 @@ public class CommandPost implements CommandExecutor {
             // /post open <Player>
             if (arg.length == 2) {
                 if (!player.hasPermission("post.admin")) {
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Du hast keine Berechtigung.");
+                    player.sendMessage(ChatColor.RED + "Du hast keine Berechtigung.");
                     return true;
                 }
 
@@ -125,8 +121,7 @@ public class CommandPost implements CommandExecutor {
                 OfflinePlayer receiver = Bukkit.getOfflinePlayer(arg[1]);
 
                 if (!receiver.hasPlayedBefore()) {
-                    sender.sendMessage("§2--- PostBox ---");
-                    sender.sendMessage("§2" + arg[1] + " §6hat noch nie zuvor auf diesem Server gespielt.");
+                    sender.sendMessage(ChatColor.GRAY + arg[1] + ChatColor.AQUA + " hat noch nie zuvor auf diesem Server gespielt.");
                     return true;
                 }
 
@@ -137,8 +132,7 @@ public class CommandPost implements CommandExecutor {
                 }
 
                 if (counter == 0) {
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Die PostBox von §2" + receiver.getName() + " §6ist leer.");
+                    player.sendMessage(ChatColor.AQUA + "Die PostBox von " + ChatColor.GRAY + receiver.getName() + ChatColor.AQUA + " ist leer.");
                     return true;
                 }
 
@@ -186,14 +180,12 @@ public class CommandPost implements CommandExecutor {
             // /post send <Player>
             if (arg.length == 2) {
                 if (!player.hasPermission("post.use") && !player.hasPermission("post.admin")) {
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Du hast keine Berechtigung.");
+                    player.sendMessage(ChatColor.RED + "Du hast keine Berechtigung.");
                     return true;
                 }
 
                 if (player.getName().equals(arg[1])) {
-                    sender.sendMessage("§2--- PostBox ---");
-                    sender.sendMessage("§6Du kannst dir selbst keine Post senden.");
+                    sender.sendMessage(ChatColor.RED + "Du kannst dir selbst keine Post senden.");
                     return true;
                 }
 
@@ -201,8 +193,7 @@ public class CommandPost implements CommandExecutor {
                 OfflinePlayer receiver = Bukkit.getOfflinePlayer(arg[1]);
 
                 if (!receiver.hasPlayedBefore()) {
-                    sender.sendMessage("§2--- PostBox ---");
-                    sender.sendMessage("§2" + arg[1] + " §6hat noch nie zuvor auf diesem Server gespielt.");
+                    sender.sendMessage(ChatColor.GRAY + arg[1] + ChatColor.AQUA + " hat noch nie zuvor auf diesem Server gespielt.");
                     return true;
                 }
 
@@ -222,8 +213,7 @@ public class CommandPost implements CommandExecutor {
                     try {
                         player.getInventory().clear(player.getInventory().first(itemstack));
                     } catch (Exception e) {
-                        player.sendMessage("§2--- PostBox ---");
-                        player.sendMessage("§6Du kannst nichts Leeres verschicken.");
+                        player.sendMessage(ChatColor.RED + "Du kannst nichts Leeres verschicken.");
                         return true;
                     }
 
@@ -232,20 +222,17 @@ public class CommandPost implements CommandExecutor {
                     this.plugin.getbox().set(receiver.getUniqueId().toString() + ".slot" + counter + "sender", player.getUniqueId().toString());
                     this.plugin.savebox();
 
-                    player.sendMessage("§2--- PostBox ---");
-                    player.sendMessage("§6Du hast Post an §2" + arg[1] + " §6verschickt.");
+                    player.sendMessage(ChatColor.AQUA + "Du hast Post an " + ChatColor.GRAY + arg[1] + ChatColor.AQUA + " verschickt.");
 
                     if (receiver.isOnline()) {
                         if ((receiver.getPlayer().hasPermission("post.use"))
                             || (receiver.getPlayer().hasPermission("post.admin"))) {
                             receiver.getPlayer().spigot().sendMessage(
-                                new ComponentBuilder("--- PostBox --- (Optionen anklickbar)")
-                                    .color(ChatColor.DARK_GREEN)
-                                    .append("\n>> Du hast Post erhalten. Klicke hier um deine PostBox zu §ffnen.")
-                                    .color(ChatColor.GOLD)
+                                new ComponentBuilder(ChatColor.AQUA + "Du hast Post erhalten. Klicke hier um deine PostBox zu öffnen.")
+                                    .color(ChatColor.GRAY)
                                     .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                                         new ComponentBuilder("/post open")
-                                            .color(ChatColor.DARK_GREEN).create()))
+                                            .color(ChatColor.GRAY).create()))
                                     .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
                                         "/post open"))
                                     .create());
@@ -259,8 +246,7 @@ public class CommandPost implements CommandExecutor {
                     return true;
                 }
 
-                player.sendMessage("§2--- PostBox ---");
-                player.sendMessage("§6Die PostBox von §2" + arg[1] + " §6ist voll.");
+                player.sendMessage(ChatColor.AQAU + "Die PostBox von " + ChatColor.GRAY + arg[1] + ChatColor.AQUA + " ist voll.");
                 return true;
 
             }
@@ -277,52 +263,52 @@ public class CommandPost implements CommandExecutor {
         if ((player.hasPermission("post.use")) || (player.hasPermission("post.admin"))) {
             if (mode.equalsIgnoreCase("*")) {
                 player.spigot().sendMessage(
-                    new ComponentBuilder("--- PostBox --- (Optionen anklickbar)").color(ChatColor.DARK_GREEN)
-                        .append("\n>> Deine PostBox §ffnen.").color(ChatColor.GOLD)
+                    new ComponentBuilder(ChatColor.AQUA + "------- " + ChatColor.GRAY + "PostBox (anklickbar)" + ChatColor.AQUA +  " -------")
+                        .color(ChatColor.AQUA)
+                        .append("\n » " + ChatColor.GRAY + "Deine PostBox öffnen.").color(ChatColor.AQUA)
                         .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                            new ComponentBuilder("/post open").color(ChatColor.DARK_GREEN).create()))
+                            new ComponentBuilder("/post open").color(ChatColor.GRAY).create()))
                         .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/post open")).create());
                 if (player.hasPermission("post.admin")) {
                     player.spigot().sendMessage(
-                        new ComponentBuilder(">> PostBox eines Spielers §ffnen.").color(ChatColor.GOLD)
+                        new ComponentBuilder(" » " + ChatColor.GRAY + "PostBox eines Spielers öffnen.").color(ChatColor.AQUA)
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                new ComponentBuilder("/post open <Spieler>").color(ChatColor.DARK_GREEN)
+                                new ComponentBuilder("/post open <Spieler>").color(ChatColor.GRAY)
                                     .create()))
                             .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/post open ")).create());
                 }
                 player.spigot().sendMessage(
-                    new ComponentBuilder(">> Gegenstand in der Hand an Spieler senden.").color(ChatColor.GOLD)
+                    new ComponentBuilder(" » " + ChatColor.GRAY + "Gegenstand in der Hand an Spieler senden.").color(ChatColor.AQUA)
                         .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                            new ComponentBuilder("/post send <Spieler>").color(ChatColor.DARK_GREEN)
+                            new ComponentBuilder("/post send <Spieler>").color(ChatColor.GRAY)
                                 .create()))
                         .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/post send ")).create());
             } else if (mode.equalsIgnoreCase("open")) {
                 player.spigot().sendMessage(
-                    new ComponentBuilder("--- PostBox --- (Optionen anklickbar)").color(ChatColor.DARK_GREEN)
-                        .append("\n>> Deine PostBox §ffnen.").color(ChatColor.GOLD)
+                    new ComponentBuilder(ChatColor.AQUA + "------- " + ChatColor.GRAY + "PostBox (anklickbar)" + ChatColor.AQUA +  " -------").color(ChatColor.DARK_GREEN)
+                        .append("\n » " + ChatColor. GRAY + "Deine PostBox öffnen.").color(ChatColor.AQUA)
                         .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                            new ComponentBuilder("/post open").color(ChatColor.DARK_GREEN).create()))
+                            new ComponentBuilder("/post open").color(ChatColor.GRAY).create()))
                         .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/post open")).create());
                 if (player.hasPermission("post.admin")) {
                     player.spigot().sendMessage(
-                        new ComponentBuilder(">> PostBox eines Spielers §ffnen.").color(ChatColor.GOLD)
+                        new ComponentBuilder(" » " + ChatColor.GRAY + "PostBox eines Spielers öffnen.").color(ChatColor.AQUA)
                             .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                new ComponentBuilder("/post open <Spieler>").color(ChatColor.DARK_GREEN)
+                                new ComponentBuilder("/post open <Spieler>").color(ChatColor.GRAY)
                                     .create()))
                             .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/post open ")).create());
                 }
             } else if (mode.equalsIgnoreCase("send")) {
                 player.spigot().sendMessage(
-                    new ComponentBuilder("--- PostBox --- (Optionen anklickbar)").color(ChatColor.DARK_GREEN)
-                        .append("\n>> Gegenstand in der Hand an Spieler senden.").color(ChatColor.GOLD)
+                    new ComponentBuilder(ChatColor.AQUA + "------- " + ChatColor.GRAY + "PostBox (anklickbar)" + ChatColor.AQUA +  " -------").color(ChatColor.DARK_GREEN)
+                        .append(" » " + ChatColor.GRAY + "Gegenstand in der Hand an Spieler senden.").color(ChatColor.AQUA)
                         .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                            new ComponentBuilder("/post send <Spieler>").color(ChatColor.DARK_GREEN)
+                            new ComponentBuilder("/post send <Spieler>").color(ChatColor.GRAY)
                                 .create()))
                         .event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/post send ")).create());
             }
         } else {
-            player.sendMessage("§2--- PostBox ---");
-            player.sendMessage("§6Du hast keine Berechtigung.");
+            player.sendMessage(ChatColor.RED + "Du hast keine Berechtigung.");
         }
     }
 }
