@@ -53,7 +53,7 @@ public class CommandPost implements CommandExecutor {
             // /post open
             if (arg.length == 1) {
                 if (!player.hasPermission("post.use")) {
-                    player.sendMessage(ChatColor.Red + "Du hast keine Berechtigung.");
+                    player.sendMessage(ChatColor.RED + "Du hast keine Berechtigung.");
                     return true;
                 }
 
@@ -246,7 +246,7 @@ public class CommandPost implements CommandExecutor {
                     return true;
                 }
 
-                player.sendMessage(ChatColor.AQAU + "Die PostBox von " + ChatColor.GRAY + arg[1] + ChatColor.AQUA + " ist voll.");
+                player.sendMessage(ChatColor.AQUA + "Die PostBox von " + ChatColor.GRAY + arg[1] + ChatColor.AQUA + " ist voll.");
                 return true;
 
             }
