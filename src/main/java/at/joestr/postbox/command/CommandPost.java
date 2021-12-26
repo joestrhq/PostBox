@@ -1,4 +1,4 @@
-package xyz.joestr.postbox.command;
+package at.joestr.postbox.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.inventory.Inventory;
-import xyz.joestr.postbox.PostBoxPlugin;
+import at.joestr.postbox.PostBoxPlugin;
 
 public class CommandPost implements CommandExecutor {
 

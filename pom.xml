@@ -10,7 +10,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
     
-  <groupId>xyz.joestr</groupId>
+  <groupId>at.joestr</groupId>
   <artifactId>postbox</artifactId>
   <version>1.0.0</version>
     

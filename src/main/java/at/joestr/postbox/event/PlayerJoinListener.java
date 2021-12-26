@@ -1,4 +1,4 @@
-package xyz.joestr.postbox.event;
+package at.joestr.postbox.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,7 +10,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 
-import xyz.joestr.postbox.PostBoxPlugin;
+import at.joestr.postbox.PostBoxPlugin;
 
 public class PlayerJoinListener implements Listener {
 
@@ -34,7 +34,7 @@ public class PlayerJoinListener implements Listener {
             if ((counter != -1) && (counter != 0)) {
                 player.spigot().sendMessage(
                     new ComponentBuilder("--- PostBox --- (Optionen anklickbar)").color(ChatColor.DARK_GREEN)
-                        .append("\n>> Du hast Post erhalten. Klicke hier um deine PostBox zu öffnen.")
+                        .append("\n>> Du hast Post erhalten. Klicke hier um deine PostBox zu ï¿½ffnen.")
                         .color(ChatColor.GOLD)
                         .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                             new ComponentBuilder("/post open").color(ChatColor.DARK_GREEN).create()))

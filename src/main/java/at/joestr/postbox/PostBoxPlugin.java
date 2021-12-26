@@ -1,4 +1,4 @@
-package xyz.joestr.postbox;
+package at.joestr.postbox;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,11 +15,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
-import xyz.joestr.postbox.command.CommandPost;
-import xyz.joestr.postbox.event.InventoryClickListener;
-import xyz.joestr.postbox.event.PlayerJoinListener;
-import xyz.joestr.postbox.tabcompleter.TabCompleterPost;
-import xyz.joestr.postbox.util.Base64Objectifier;
+import at.joestr.postbox.command.CommandPost;
+import at.joestr.postbox.event.InventoryClickListener;
+import at.joestr.postbox.event.PlayerJoinListener;
+import at.joestr.postbox.tabcompleter.TabCompleterPost;
+import at.joestr.postbox.util.Base64Objectifier;
 
 public class PostBoxPlugin extends JavaPlugin implements Listener {
 

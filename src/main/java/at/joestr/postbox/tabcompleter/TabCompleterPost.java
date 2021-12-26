@@ -1,4 +1,4 @@
-package xyz.joestr.postbox.tabcompleter;
+package at.joestr.postbox.tabcompleter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import xyz.joestr.postbox.PostBoxPlugin;
+import at.joestr.postbox.PostBoxPlugin;
 
 public class TabCompleterPost implements TabCompleter {
     //private PostBox plugin;

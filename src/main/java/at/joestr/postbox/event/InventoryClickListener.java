@@ -1,4 +1,4 @@
-package xyz.joestr.postbox.event;
+package at.joestr.postbox.event;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import xyz.joestr.postbox.PostBoxPlugin;
+import at.joestr.postbox.PostBoxPlugin;
 
 public class InventoryClickListener implements Listener {
 
@@ -29,7 +29,7 @@ public class InventoryClickListener implements Listener {
         String playerUUID = player.getUniqueId().toString();
 
         // Is not a postbox inventory?
-        if (!player.getOpenInventory().getTitle().equalsIgnoreCase("§6[§2PostBox§6]") || (event.getClickedInventory() == null)) {
+        if (!player.getOpenInventory().getTitle().equalsIgnoreCase("ï¿½6[ï¿½2PostBoxï¿½6]") || (event.getClickedInventory() == null)) {
             return;
         }
 
@@ -40,7 +40,7 @@ public class InventoryClickListener implements Listener {
         }
 
         // redundant? to the first if statement?
-        if (!event.getClickedInventory().getName().equalsIgnoreCase("§6[§2PostBox§6]")) {
+        if (!event.getClickedInventory().getName().equalsIgnoreCase("ï¿½6[ï¿½2PostBoxï¿½6]")) {
             return;
         }
 
@@ -49,8 +49,8 @@ public class InventoryClickListener implements Listener {
 
             player.closeInventory();
 
-            player.sendMessage("§2---PostBox---");
-            player.sendMessage("§6Dein Inventar ist voll.");
+            player.sendMessage("ï¿½2---PostBox---");
+            player.sendMessage("ï¿½6Dein Inventar ist voll.");
             return;
 
         } else if (this.plugin.isAdminMode.containsKey(player.getUniqueId())) { // Player interacts with a postbox from another player
