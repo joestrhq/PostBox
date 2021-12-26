@@ -40,7 +40,7 @@ public class InventoryClickListener implements Listener {
         }
 
         // redundant? to the first if statement?
-        if (!event.getClickedInventory().getName().equalsIgnoreCase("�6[�2PostBox�6]")) {
+        if (!event.getView().getTitle().equalsIgnoreCase("�6[�2PostBox�6]")) {
             return;
         }
 
