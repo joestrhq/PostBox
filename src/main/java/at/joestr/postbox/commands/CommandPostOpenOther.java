@@ -1,0 +1,140 @@
+// 
+// MIT License
+// Copyright (c) <year> <copyright holders>
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// 
+package at.joestr.postbox.commands;
+
+import at.joestr.postbox.PostBoxPlugin;
+import at.joestr.postbox.configuration.CurrentEntries;
+import at.joestr.postbox.models.PostBoxModel;
+import at.joestr.postbox.utils.LocaleHelper;
+import at.joestr.postbox.utils.MessageHelper;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.apache.commons.lang3.tuple.Triple;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+/**
+ *
+ * @author joestr
+ */
+public class CommandPostOpenOther implements TabExecutor {
+
+  public CommandPostOpenOther() {
+  }
+
+  @Override
+  public List<String> onTabComplete(CommandSender cs, Command cmnd, String string, String[] strings) {
+    Stream<String> completions = Bukkit.getServer().getOnlinePlayers().stream().map(Player::getName);
+    
+    if (strings.length == 0) {
+      return completions.collect(Collectors.toList());
+    }
+    
+    if (strings.length == 1) {
+      return completions.filter(c -> c.startsWith(strings[0])).collect(Collectors.toList());
+    }
+  
+    return List.of();
+  }
+
+  @Override
+  public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
+    if (args.length != 1) {
+			return false;
+		}
+    
+    final Locale locale
+			= sender instanceof Player
+				? LocaleHelper.resolve(((Player) sender).getLocale())
+				: Locale.ENGLISH;
+
+		if (!(sender instanceof Player)) {
+			new MessageHelper()
+        .prefix(true)
+				.path(CurrentEntries.LANG_GEN_NOT_A_PLAYER)
+				.locale(locale)
+				.receiver(sender)
+				.send();
+			return true;
+		}
+    
+    Player player = (Player) sender;
+
+		PostBoxPlugin.getInstance()
+      .getLuckPermsApi()
+      .getUserManager()
+      .lookupUniqueId(args[0])
+      .whenComplete((targetUuid, exception) -> {
+        if (exception != null) {
+          
+        }
+        
+        List<PostBoxModel> playerPostBox = null;
+
+        try {
+          playerPostBox = PostBoxPlugin.getInstance().getPostBoxDao().queryBuilder().where().eq("player", targetUuid).query();
+        } catch (SQLException ex) {
+          Logger.getLogger(CommandPostOpen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (playerPostBox == null) {
+          new MessageHelper()
+            .prefix(true)
+            .path(CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_EMPTY)
+            .locale(locale)
+            .receiver(sender)
+            .send();
+          return;
+        }
+
+        Inventory inventory = Bukkit.getServer().createInventory(
+          null,
+          Integer.parseInt(new MessageHelper().path(CurrentEntries.CONF_SIZE).string()),
+          new MessageHelper().locale(locale).path(CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_CHEST_TITLE).string()
+            .replace("%player", args[0])
+        );
+        PostBoxPlugin.getInstance().getInventoryMappings().add(Triple.of(player.getUniqueId(), inventory, targetUuid));
+        int inventoryItemCount = 0;
+
+        for (PostBoxModel lPbo : playerPostBox) {
+          ItemStack localItemStack = lPbo.getItemStack();
+          ItemMeta localItemMeta = localItemStack.getItemMeta();
+
+          /*
+          List<String> localLore = new ArrayList<>();
+          String sender = lPbo.getSender();
+          if (sender != null) {
+              localLore.add("§2Absender: §6");
+          } else {
+              localLore.add("§2Absender: §6?");
+          }
+          localItemMeta.setLore(localLore);
+          */
+
+          localItemStack.setItemMeta(localItemMeta);
+          inventory.setItem(inventoryItemCount++, localItemStack);
+        }
+
+        player.openInventory(inventory);
+      });
+    
+    return true;
+  }
+}

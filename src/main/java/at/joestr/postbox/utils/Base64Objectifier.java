@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package at.joestr.postbox.util;
+package at.joestr.postbox.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

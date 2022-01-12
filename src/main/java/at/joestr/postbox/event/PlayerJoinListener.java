@@ -4,42 +4,45 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-
 import at.joestr.postbox.PostBoxPlugin;
+import at.joestr.postbox.configuration.CurrentEntries;
+import at.joestr.postbox.utils.LocaleHelper;
+import at.joestr.postbox.utils.MessageHelper;
+import java.sql.SQLException;
+import java.util.Locale;
 
 public class PlayerJoinListener implements Listener {
 
-    private PostBoxPlugin plugin;
+  public PlayerJoinListener() {
+  }
 
-    public PlayerJoinListener(PostBoxPlugin postbox) {
-        this.plugin = postbox;
-        this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
+  @EventHandler
+  public void onJoin(PlayerJoinEvent event) {
+    Player player = event.getPlayer();
+    Locale locale = LocaleHelper.resolve(player.getLocale());
+
+    if (!player.hasPermission(CurrentEntries.PERM_CMD_POSTBOX_OPEN.toString())) {
+      return;
     }
 
-    @EventHandler
-    public void Join(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        if ((player.hasPermission("post.use")) || (player.hasPermission("post.admin"))) {
-            int counter;
-            try {
-                counter = this.plugin.getbox().getInt(player.getUniqueId().toString() + ".count");
-            } catch (Exception e) {
-                counter = -1;
-            }
-            if ((counter != -1) && (counter != 0)) {
-                player.spigot().sendMessage(
-                    new ComponentBuilder("--- PostBox --- (Optionen anklickbar)").color(ChatColor.DARK_GREEN)
-                        .append("\n>> Du hast Post erhalten. Klicke hier um deine PostBox zu �ffnen.")
-                        .color(ChatColor.GOLD)
-                        .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                            new ComponentBuilder("/post open").color(ChatColor.DARK_GREEN).create()))
-                        .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/post open")).create());
-            }
-        }
+    long size = -1;
+    try {
+      size = PostBoxPlugin.getInstance()
+        .getPostBoxDao()
+        .queryBuilder()
+        .where()
+        .eq("player", player.getUniqueId())
+        .countOf();
+    } catch (SQLException ex) {
+
     }
+
+    if (size > 0) {
+      new MessageHelper()
+        .prefix(true)
+        .path(CurrentEntries.LANG_EVT_MESSAGE_ON_JOIN)
+        .locale(locale)
+        .send();
+    }
+  }
 }
