@@ -1,4 +1,4 @@
-  // 
+// 
 // MIT License
 // Copyright (c) <year> <copyright holders>
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -88,7 +88,7 @@ public class CommandPostOpen implements TabExecutor {
       AppConfiguration.getInstance().getInt(CurrentEntries.CONF_SIZE.toString()),
       new MessageHelper().locale(locale).path(CurrentEntries.LANG_CMD_POSTBOX_OPEN_CHEST_TITLE).string()
     );
-    PostBoxPlugin.getInstance().getInventoryMappings().add(Triple.of(player.getUniqueId(), inventory, null));
+    PostBoxPlugin.getInstance().getInventoryMappings().add(Triple.of(player.getUniqueId(), inventory, player.getUniqueId()));
     int inventoryItemCount = 0;
 
     for (PostBoxModel lPbo : playerPostBox) {

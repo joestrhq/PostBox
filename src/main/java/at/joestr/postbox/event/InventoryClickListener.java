@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryClickListener implements Listener {
@@ -27,8 +28,16 @@ public class InventoryClickListener implements Listener {
     Player player = (Player) event.getWhoClicked();
     Locale locale = LocaleHelper.resolve(player.getLocale());
 
-    if (!PostBoxPlugin.getInstance().getInventoryMappings().stream().anyMatch(t -> t.getMiddle().equals(event.getInventory()))) {
+    if (!PostBoxPlugin.getInstance().getInventoryMappings().stream().anyMatch(t -> t.getLeft().equals(player.getUniqueId()))) {
+      return;
+    }
+    
+    if (!PostBoxPlugin.getInstance().getInventoryMappings().stream().anyMatch(t -> t.getMiddle().equals(event.getClickedInventory()))) {
       event.setCancelled(true);
+      return;
+    }
+    
+    if (event.getCurrentItem() == null) {
       return;
     }
 
@@ -41,9 +50,10 @@ public class InventoryClickListener implements Listener {
         .receiver(player)
         .locale(locale)
         .send();
+      return;
     }
     
-    event.getInventory().remove(event.getCurrentItem());
+    event.getClickedInventory().remove(event.getCurrentItem());
     
     PostBoxModel get = null;
     try {
@@ -68,7 +78,7 @@ public class InventoryClickListener implements Listener {
       Logger.getLogger(InventoryClickListener.class.getName()).log(Level.SEVERE, null, ex);
     }
 
-    ItemStack[] contents = event.getInventory().getContents();
+    ItemStack[] contents = event.getClickedInventory().getContents();
     event.getInventory().clear();
     event.getInventory().setContents(contents);
   }

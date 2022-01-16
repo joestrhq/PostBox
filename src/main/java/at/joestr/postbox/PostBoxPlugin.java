@@ -14,6 +14,7 @@ import at.joestr.postbox.configuration.CurrentEntries;
 import at.joestr.postbox.configuration.LanguageConfiguration;
 import at.joestr.postbox.configuration.Updater;
 import at.joestr.postbox.event.InventoryClickListener;
+import at.joestr.postbox.event.InventoryCloseListener;
 import at.joestr.postbox.event.PlayerJoinListener;
 import at.joestr.postbox.models.PostBoxModel;
 import com.j256.ormlite.dao.Dao;
@@ -111,6 +112,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   private void registerListeners() {
     this.getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+    this.getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
   }
   
   private void loadAppConfiguration() {
