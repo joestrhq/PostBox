@@ -7,9 +7,11 @@ package at.joestr.postbox.commands;
 import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.AppConfiguration;
 import at.joestr.postbox.configuration.CurrentEntries;
-import at.joestr.postbox.models.PostBoxModel;
-import at.joestr.postbox.utils.LocaleHelper;
-import at.joestr.postbox.utils.MessageHelper;
+import at.joestr.postbox.configuration.DatabaseConfiguration;
+import at.joestr.postbox.configuration.DatabaseModels;
+import at.joestr.postbox.configuration.DatabaseModels.PostBoxModel;
+import at.joestr.postbox.configuration.LocaleHelper;
+import at.joestr.postbox.configuration.MessageHelper;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
@@ -98,7 +100,7 @@ public class CommandPostSend implements TabExecutor {
     
     List<PostBoxModel> llPbo = null;
     try {
-      llPbo = PostBoxPlugin.getInstance().getPostBoxDao().queryBuilder().where().eq("player", receiver.getUniqueId()).query();
+      llPbo = DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("player", receiver.getUniqueId()).query();
     } catch (SQLException ex) {
       // TODO: send message if exception
       player.sendMessage("Exception");
@@ -130,12 +132,17 @@ public class CommandPostSend implements TabExecutor {
     
     player.getInventory().clear(player.getInventory().first(itemstack));
     
-    PostBoxModel newM = new PostBoxModel();
-    newM.setPlayer(player.getUniqueId());
+    PostBoxModel newM;
+    newM = new PostBoxModel();
+    newM.setPlayer(receiver.getUniqueId());
     newM.setItemStack(itemstack);
     
     try {
-      PostBoxPlugin.getInstance().getPostBoxDao().create(
+      int count = (int) DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder()
+        .where().eq("player", receiver.getUniqueId()).countOf();
+      newM.setCount(count);
+      
+      DatabaseConfiguration.getInstance().getPostBoxDao().create(
         newM
       );
     } catch (SQLException ex) {
@@ -146,7 +153,7 @@ public class CommandPostSend implements TabExecutor {
       .prefix(true)
       .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_SENDER)
       .locale(locale)
-      .modify(s -> s.replace("%playername", strings[0]))
+      .modify(s -> s.replace("%player", strings[0]))
       .receiver(cs)
       .send();
     
@@ -156,7 +163,7 @@ public class CommandPostSend implements TabExecutor {
         .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_RECEIVER)
         .locale(locale)
         .modify(s -> s.replace("%player", strings[0]))
-        .receiver(cs)
+        .receiver((CommandSender) receiver)
         .send();
     }
     

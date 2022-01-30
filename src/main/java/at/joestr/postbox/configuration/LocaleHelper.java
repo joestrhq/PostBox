@@ -3,7 +3,7 @@
 // 
 // Licensed under the EUPL-1.2
 // 
-package at.joestr.postbox.utils;
+package at.joestr.postbox.configuration;
 
 import java.util.Locale;
 

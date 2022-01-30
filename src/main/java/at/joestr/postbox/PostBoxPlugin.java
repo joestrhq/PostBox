@@ -11,17 +11,12 @@ import at.joestr.postbox.commands.CommandPost;
 import at.joestr.postbox.commands.CommandPostOpenOther;
 import at.joestr.postbox.configuration.AppConfiguration;
 import at.joestr.postbox.configuration.CurrentEntries;
+import at.joestr.postbox.configuration.DatabaseConfiguration;
 import at.joestr.postbox.configuration.LanguageConfiguration;
 import at.joestr.postbox.configuration.Updater;
 import at.joestr.postbox.event.InventoryClickListener;
 import at.joestr.postbox.event.InventoryCloseListener;
 import at.joestr.postbox.event.PlayerJoinListener;
-import at.joestr.postbox.models.PostBoxModel;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,8 +37,7 @@ import org.bukkit.inventory.Inventory;
 public class PostBoxPlugin extends JavaPlugin implements Listener {
   private static final Logger LOG = Logger.getLogger(PostBoxPlugin.class.getName());
   public static PostBoxPlugin instance = null;
-
-  private Dao<PostBoxModel, String> postBoxDao;
+  
   private HashMap<String, TabExecutor> commandMap;
   private Updater updater;
   private LuckPerms luckPermsApi;
@@ -95,7 +89,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   public void onDisable() {
     super.onDisable();
     
-    this.postBoxDao.getConnectionSource().closeQuietly();
+    DatabaseConfiguration.getInstance().getConnectionSource().closeQuietly();
   }
   
   private void registerCommands() {
@@ -146,14 +140,13 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
 	}
 
   private void loadDatabase() throws SQLException {
-		ConnectionSource connectionSource
-			= new JdbcConnectionSource(
-				AppConfiguration.getInstance().getString("jdbcUri")
-			);
-
-		this.postBoxDao = DaoManager.createDao(connectionSource, PostBoxModel.class);
-
-		TableUtils.createTableIfNotExists(connectionSource, PostBoxModel.class);
+    try {
+      DatabaseConfiguration.getInstance(
+        AppConfiguration.getInstance().getString(CurrentEntries.CONF_JDBCURI.toString())
+      );
+    } catch (ClassNotFoundException ex) {
+      Logger.getLogger(PostBoxPlugin.class.getName()).log(Level.SEVERE, null, ex);
+    }
 	}
   
   private void loadExternalPluginIntegrations() {
@@ -166,10 +159,6 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   
   public static PostBoxPlugin getInstance() {
     return instance;
-  }
-
-  public Dao<PostBoxModel, String> getPostBoxDao() {
-    return postBoxDao;
   }
 
   public HashMap<String, TabExecutor> getCommandMap() {

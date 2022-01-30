@@ -106,15 +106,15 @@
               <relocations>
                 <relocation>
                   <pattern>com.j256.ormlite</pattern>
-                  <shadedPattern>at.joestr.postbox.thirdparty.com.j256.ormlite</shadedPattern>
+                  <shadedPattern>at.joestr.postbox.zzzthirdpartylib.com.j256.ormlite</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.h2</pattern>
-                  <shadedPattern>at.joestr.postbox.thirdparty.org.h2</shadedPattern>
+                  <shadedPattern>at.joestr.postbox.zzzthirdpartylib.org.h2</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>com.vdurmont.semver4j</pattern>
-                  <shadedPattern>at.joestr.postbox.thirdparty.com.vdurmont.semver4j</shadedPattern>
+                  <shadedPattern>at.joestr.postbox.zzzthirdpartylib.com.vdurmont.semver4j</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
@@ -129,6 +129,7 @@
                 <exclude>META-INF/*.MF</exclude>
                 <exclude>META-INF/*.DSA</exclude>
                 <exclude>META-INF/*.RSA</exclude>
+                <exclude>META-INF/services/**</exclude>
               </excludes>
             </filter>
           </filters>
@@ -180,6 +181,17 @@
       <scope>compile</scope>
     </dependency>
   </dependencies>
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.1.2</version>
+        <configuration>
+          <configLocation>google_checks.xml</configLocation>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

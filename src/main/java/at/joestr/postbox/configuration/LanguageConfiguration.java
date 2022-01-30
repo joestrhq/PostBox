@@ -10,11 +10,15 @@ package at.joestr.postbox.configuration;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -149,4 +153,62 @@ public class LanguageConfiguration {
 		}
 		return null;
 	}
+  
+  public MessageBuilder getBuilder() {
+    return new MessageBuilder();
+  }
+  
+  private class MessageBuilder {
+    private CurrentEntries path;
+    private Locale locale;
+    private List<Function<String, String>> modifiers;
+    private HashMap<String, CurrentEntries> replacings;
+
+    public MessageBuilder() {
+      this.modifiers = new ArrayList<>();
+      this.replacings = new HashMap<>();
+    }
+
+    public MessageBuilder path(CurrentEntries path) {
+      this.path = path;
+      return this;
+    }
+
+    public MessageBuilder locale(Locale locale) {
+      this.locale = locale;
+      return this;
+    }
+
+    public MessageBuilder addReplacing(String toReplace, CurrentEntries currentEntry) {
+      this.replacings.put(toReplace, currentEntry);
+      return this;
+    }
+    
+    public MessageBuilder addModifier(Function<String, String> modifier) {
+      this.modifiers.add(modifier);
+      return this;
+    }
+
+    public String build() {
+      String message
+        = LanguageConfiguration.getInstance()
+          .getString(
+            this.path.toString(),
+            this.locale
+          );
+
+      for (Entry<String, CurrentEntries> replacing : this.replacings.entrySet()) {
+        message = message.replace(
+          replacing.getKey(),
+          LanguageConfiguration.getInstance().getString(replacing.getValue().toString(), locale)
+        );
+      }
+      
+      for (Function<String, String> modifier : this.modifiers) {
+        modifier.apply(message);
+      }
+
+      return message;
+    }
+  }
 }

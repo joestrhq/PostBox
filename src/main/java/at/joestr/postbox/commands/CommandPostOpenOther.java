@@ -9,9 +9,10 @@ package at.joestr.postbox.commands;
 
 import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.CurrentEntries;
-import at.joestr.postbox.models.PostBoxModel;
-import at.joestr.postbox.utils.LocaleHelper;
-import at.joestr.postbox.utils.MessageHelper;
+import at.joestr.postbox.configuration.DatabaseConfiguration;
+import at.joestr.postbox.configuration.DatabaseModels.PostBoxModel;
+import at.joestr.postbox.configuration.LocaleHelper;
+import at.joestr.postbox.configuration.MessageHelper;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
@@ -25,7 +26,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -89,7 +89,7 @@ public class CommandPostOpenOther implements TabExecutor {
         List<PostBoxModel> playerPostBox = null;
 
         try {
-          playerPostBox = PostBoxPlugin.getInstance().getPostBoxDao().queryBuilder().where().eq("player", targetUuid).query();
+          playerPostBox = DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("player", targetUuid).query();
         } catch (SQLException ex) {
           Logger.getLogger(CommandPostOpen.class.getName()).log(Level.SEVERE, null, ex);
         }

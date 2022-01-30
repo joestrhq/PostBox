@@ -7,14 +7,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.CurrentEntries;
-import at.joestr.postbox.models.PostBoxModel;
-import at.joestr.postbox.utils.LocaleHelper;
-import at.joestr.postbox.utils.MessageHelper;
+import at.joestr.postbox.configuration.DatabaseConfiguration;
+import at.joestr.postbox.configuration.DatabaseModels.PostBoxModel;
+import at.joestr.postbox.configuration.LocaleHelper;
+import at.joestr.postbox.configuration.MessageHelper;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryClickListener implements Listener {
@@ -57,7 +58,7 @@ public class InventoryClickListener implements Listener {
     
     PostBoxModel get = null;
     try {
-      get = PostBoxPlugin.getInstance()
+      get = DatabaseConfiguration.getInstance()
         .getPostBoxDao()
         .queryBuilder()
         .where()
@@ -73,7 +74,9 @@ public class InventoryClickListener implements Listener {
     );
 
     try {
-      PostBoxPlugin.getInstance().getPostBoxDao().delete(get);
+      DeleteBuilder<PostBoxModel, String> deleteBuilder = DatabaseConfiguration.getInstance().getPostBoxDao().deleteBuilder();
+      deleteBuilder.where().eq("player", player.getUniqueId()).and().eq("slot", get.getCount());
+      deleteBuilder.delete();
     } catch (SQLException ex) {
       Logger.getLogger(InventoryClickListener.class.getName()).log(Level.SEVERE, null, ex);
     }

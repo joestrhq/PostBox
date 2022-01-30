@@ -3,10 +3,8 @@
 // 
 // Licensed under the EUPL-1.2
 // 
-package at.joestr.postbox.utils;
+package at.joestr.postbox.configuration;
 
-import at.joestr.postbox.configuration.CurrentEntries;
-import at.joestr.postbox.configuration.LanguageConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

@@ -7,6 +7,7 @@ authors: [2YB, 9YB]
 website: https://projects.joestr.at/postbox/
 database: true
 #depend: [WorldEdit, WorldGuard]
+softdepend: [LuckPerms]
 commands:
   postbox:
     description: Shows the help for the PostBox plugin.

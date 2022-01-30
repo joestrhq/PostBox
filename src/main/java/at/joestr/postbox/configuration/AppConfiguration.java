@@ -8,7 +8,6 @@
 package at.joestr.postbox.configuration;
 
 import at.joestr.postbox.PostBoxPlugin;
-import com.vdurmont.semver4j.Semver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

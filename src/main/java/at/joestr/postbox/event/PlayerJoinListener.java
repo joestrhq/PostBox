@@ -4,10 +4,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.CurrentEntries;
-import at.joestr.postbox.utils.LocaleHelper;
-import at.joestr.postbox.utils.MessageHelper;
+import at.joestr.postbox.configuration.DatabaseConfiguration;
+import at.joestr.postbox.configuration.LocaleHelper;
+import at.joestr.postbox.configuration.MessageHelper;
 import java.sql.SQLException;
 import java.util.Locale;
 
@@ -27,7 +27,7 @@ public class PlayerJoinListener implements Listener {
 
     long size = -1;
     try {
-      size = PostBoxPlugin.getInstance()
+      size = DatabaseConfiguration.getInstance()
         .getPostBoxDao()
         .queryBuilder()
         .where()
@@ -42,6 +42,7 @@ public class PlayerJoinListener implements Listener {
         .prefix(true)
         .path(CurrentEntries.LANG_EVT_MESSAGE_ON_JOIN)
         .locale(locale)
+        .receiver(player)
         .send();
     }
   }

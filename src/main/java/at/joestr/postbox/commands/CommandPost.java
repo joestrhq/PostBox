@@ -5,8 +5,8 @@
 package at.joestr.postbox.commands;
 
 import at.joestr.postbox.configuration.CurrentEntries;
-import at.joestr.postbox.utils.LocaleHelper;
-import at.joestr.postbox.utils.MessageHelper;
+import at.joestr.postbox.configuration.LocaleHelper;
+import at.joestr.postbox.configuration.MessageHelper;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Locale;

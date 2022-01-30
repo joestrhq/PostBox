@@ -1,5 +1,5 @@
 version: 1
-jdbcUri: 'jdbc:h2:./plugins/PostBox/postbox'
+jdbcUri: 'jdbc:sqlite:./plugins/PostBox/postbox.db'
 size: 9
 # Updater config
 updater:
