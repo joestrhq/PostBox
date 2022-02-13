@@ -13,6 +13,7 @@ import at.joestr.postbox.configuration.DatabaseModels.PostBoxModel;
 import at.joestr.postbox.configuration.LocaleHelper;
 import at.joestr.postbox.configuration.MessageHelper;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -134,13 +135,16 @@ public class CommandPostSend implements TabExecutor {
     
     PostBoxModel newM;
     newM = new PostBoxModel();
-    newM.setPlayer(receiver.getUniqueId());
+    newM.setReceiver(receiver.getUniqueId());
     newM.setItemStack(itemstack);
+    newM.setTimestamp(LocalDateTime.now());
+    newM.setSender(player.getUniqueId());
     
     try {
       int count = (int) DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder()
         .where().eq("player", receiver.getUniqueId()).countOf();
-      newM.setCount(count);
+      
+      // TODO: check if count over configured limit
       
       DatabaseConfiguration.getInstance().getPostBoxDao().create(
         newM
