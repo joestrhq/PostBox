@@ -75,7 +75,7 @@ public class InventoryClickListener implements Listener {
 
     try {
       DeleteBuilder<PostBoxModel, String> deleteBuilder = DatabaseConfiguration.getInstance().getPostBoxDao().deleteBuilder();
-      deleteBuilder.where().eq("receiver", get.getReceiver()).and().eq("timestamp", get.getTimestamp()).and().eq("sender", get.getSender()).and().eq("base64ItemStack", get.getBase64ItemStack());
+      deleteBuilder.where().eq("id", get.getId());
       deleteBuilder.delete();
     } catch (SQLException ex) {
       Logger.getLogger(InventoryClickListener.class.getName()).log(Level.SEVERE, null, ex);
@@ -83,6 +83,9 @@ public class InventoryClickListener implements Listener {
 
     ItemStack[] contents = event.getClickedInventory().getContents();
     event.getInventory().clear();
-    event.getInventory().setContents(contents);
+    
+    for (ItemStack i : contents) {
+      event.getInventory().addItem(i);
+    }
   }
 }

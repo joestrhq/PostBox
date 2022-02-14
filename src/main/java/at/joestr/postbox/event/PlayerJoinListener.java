@@ -31,7 +31,7 @@ public class PlayerJoinListener implements Listener {
         .getPostBoxDao()
         .queryBuilder()
         .where()
-        .eq("player", player.getUniqueId())
+        .eq("receiver", player.getUniqueId())
         .countOf();
     } catch (SQLException ex) {
 

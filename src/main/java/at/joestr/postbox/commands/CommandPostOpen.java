@@ -69,7 +69,7 @@ public class CommandPostOpen implements TabExecutor {
     List<PostBoxModel> playerPostBox = null;
     
     try {
-      playerPostBox = DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("player", player.getUniqueId()).query();
+      playerPostBox = DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("receiver", player.getUniqueId()).query();
     } catch (SQLException ex) {
       Logger.getLogger(CommandPostOpen.class.getName()).log(Level.SEVERE, null, ex);
     }

@@ -13,6 +13,7 @@ import at.joestr.postbox.configuration.DatabaseModels.PostBoxModel;
 import at.joestr.postbox.configuration.LocaleHelper;
 import at.joestr.postbox.configuration.MessageHelper;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -92,7 +93,7 @@ public class CommandPostSend implements TabExecutor {
       new MessageHelper()
         .prefix(true)
         .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_RECEIVER_NEVER_PLAYED)
-        .modify(s -> s.replace("%playername", strings[0]))
+        .modify(s -> s.replace("%player", strings[0]))
         .locale(locale)
         .receiver(cs)
         .send();
@@ -101,7 +102,7 @@ public class CommandPostSend implements TabExecutor {
     
     List<PostBoxModel> llPbo = null;
     try {
-      llPbo = DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("player", receiver.getUniqueId()).query();
+      llPbo = DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("receiver", receiver.getUniqueId()).query();
     } catch (SQLException ex) {
       // TODO: send message if exception
       player.sendMessage("Exception");
@@ -113,7 +114,7 @@ public class CommandPostSend implements TabExecutor {
         .prefix(true)
         .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_RECEIPIENT_FULL)
         .locale(locale)
-        .modify(s -> s.replace("%playername", strings[0]))
+        .modify(s -> s.replace("%player", strings[0]))
         .receiver(cs)
         .send();
       return true;
@@ -137,12 +138,12 @@ public class CommandPostSend implements TabExecutor {
     newM = new PostBoxModel();
     newM.setReceiver(receiver.getUniqueId());
     newM.setItemStack(itemstack);
-    newM.setTimestamp(LocalDateTime.now());
+    newM.setTimestamp(Instant.now());
     newM.setSender(player.getUniqueId());
     
     try {
       int count = (int) DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder()
-        .where().eq("player", receiver.getUniqueId()).countOf();
+        .where().eq("receiver", receiver.getUniqueId()).countOf();
       
       // TODO: check if count over configured limit
       
