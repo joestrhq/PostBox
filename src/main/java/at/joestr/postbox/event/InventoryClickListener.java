@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryClickListener implements Listener {
@@ -81,11 +82,14 @@ public class InventoryClickListener implements Listener {
       Logger.getLogger(InventoryClickListener.class.getName()).log(Level.SEVERE, null, ex);
     }
 
-    ItemStack[] contents = event.getClickedInventory().getContents();
-    event.getInventory().clear();
-    
-    for (ItemStack i : contents) {
-      event.getInventory().addItem(i);
-    }
+    Bukkit.getScheduler().runTask(PostBoxPlugin.getInstance(), () -> {
+      ItemStack[] contents = event.getClickedInventory().getContents();
+      event.getInventory().clear();
+
+      for (ItemStack i : contents) {
+        if (i == null) continue;
+        event.getInventory().addItem(i);
+      }
+    });
   }
 }
