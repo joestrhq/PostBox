@@ -2,8 +2,8 @@ main: '${project.groupId}.${project.artifactId}.PostBoxPlugin'
 name: '${project.name}'
 version: '${project.version}'
 description: 'Sending items to otjer players.'
-author: joestr
-authors: [2YB, 9YB] 
+author: 'joestr'
+authors: ['2YB', '9YB'] 
 website: https://projects.joestr.at/postbox/
 database: true
 #depend: [WorldEdit, WorldGuard]

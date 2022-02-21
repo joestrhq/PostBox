@@ -17,6 +17,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -100,26 +101,6 @@ public class CommandPostSend implements TabExecutor {
       return true;
     }
     
-    List<PostBoxModel> llPbo = null;
-    try {
-      llPbo = DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("receiver", receiver.getUniqueId()).query();
-    } catch (SQLException ex) {
-      // TODO: send message if exception
-      player.sendMessage("Exception");
-      return true;
-    }
-    
-    if (llPbo.size() == AppConfiguration.getInstance().getInt(CurrentEntries.CONF_SIZE.toString())) {
-      new MessageHelper()
-        .prefix(true)
-        .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_RECEIPIENT_FULL)
-        .locale(locale)
-        .modify(s -> s.replace("%player", strings[0]))
-        .receiver(cs)
-        .send();
-      return true;
-    }
-    
     ItemStack itemstack = player.getInventory().getItemInMainHand();
 
     if (itemstack == null) {
@@ -134,43 +115,65 @@ public class CommandPostSend implements TabExecutor {
     
     player.getInventory().clear(player.getInventory().first(itemstack));
     
-    PostBoxModel newM;
-    newM = new PostBoxModel();
-    newM.setReceiver(receiver.getUniqueId());
-    newM.setItemStack(itemstack);
-    newM.setTimestamp(Instant.now());
-    newM.setSender(player.getUniqueId());
-    
-    try {
-      int count = (int) DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder()
-        .where().eq("receiver", receiver.getUniqueId()).countOf();
+    Bukkit.getScheduler().runTaskAsynchronously(PostBoxPlugin.getInstance(), () -> {
+      List<PostBoxModel> llPbo = null;
+      try {
+        llPbo = DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("receiver", receiver.getUniqueId()).query();
+      } catch (SQLException ex) {
+        Bukkit.getScheduler().callSyncMethod(PostBoxPlugin.getInstance(), () -> {
+          player.getInventory().addItem(itemstack); return true;
+        });
+        // TODO: send message if exception
+        player.sendMessage("Exception");
+        return;
+      }
+
+      if (llPbo.size() == AppConfiguration.getInstance().getInt(CurrentEntries.CONF_SIZE.toString())) {
+        new MessageHelper()
+          .prefix(true)
+          .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_RECEIPIENT_FULL)
+          .locale(locale)
+          .modify(s -> s.replace("%player", strings[0]))
+          .receiver(cs)
+          .send();
+        return;
+      }
       
-      // TODO: check if count over configured limit
-      
-      DatabaseConfiguration.getInstance().getPostBoxDao().create(
-        newM
-      );
-    } catch (SQLException ex) {
-      Logger.getLogger(CommandPostSend.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    
-    new MessageHelper()
-      .prefix(true)
-      .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_SENDER)
-      .locale(locale)
-      .modify(s -> s.replace("%player", strings[0]))
-      .receiver(cs)
-      .send();
-    
-    if (receiver.isOnline()) {
+      PostBoxModel newPostBoxEntry = new PostBoxModel();
+      newPostBoxEntry.setReceiver(receiver.getUniqueId());
+      newPostBoxEntry.setItemStack(itemstack);
+      newPostBoxEntry.setTimestamp(Instant.now());
+      newPostBoxEntry.setSender(player.getUniqueId());
+
+      try {
+        DatabaseConfiguration.getInstance().getPostBoxDao().create(
+          newPostBoxEntry
+        );
+      } catch (SQLException ex) {
+        Bukkit.getScheduler().callSyncMethod(PostBoxPlugin.getInstance(), () -> {
+          player.getInventory().addItem(itemstack); return true;
+        });
+        Logger.getLogger(CommandPostSend.class.getName()).log(Level.SEVERE, null, ex);
+      }
+
       new MessageHelper()
         .prefix(true)
-        .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_RECEIVER)
+        .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_SENDER)
         .locale(locale)
         .modify(s -> s.replace("%player", strings[0]))
-        .receiver((CommandSender) receiver)
+        .receiver(cs)
         .send();
-    }
+
+      if (receiver.isOnline()) {
+        new MessageHelper()
+          .prefix(true)
+          .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_RECEIVER)
+          .locale(locale)
+          .modify(s -> s.replace("%player", strings[0]))
+          .receiver((CommandSender) receiver)
+          .send();
+      }
+    });
     
     return true;
   }
