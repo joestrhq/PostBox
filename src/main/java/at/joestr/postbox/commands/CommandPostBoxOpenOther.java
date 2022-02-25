@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -34,19 +36,29 @@ import org.bukkit.inventory.meta.ItemMeta;
  *
  * @author joestr
  */
-public class CommandPostOpen implements TabExecutor {
+public class CommandPostBoxOpenOther implements TabExecutor {
 
-  public CommandPostOpen() {
+  public CommandPostBoxOpenOther() {
   }
 
   @Override
   public List<String> onTabComplete(CommandSender cs, Command cmnd, String string, String[] strings) {
+    Stream<String> completions = Bukkit.getServer().getOnlinePlayers().stream().map(Player::getName);
+    
+    if (strings.length == 0) {
+      return completions.collect(Collectors.toList());
+    }
+    
+    if (strings.length == 1) {
+      return completions.filter(c -> c.startsWith(strings[0])).collect(Collectors.toList());
+    }
+  
     return List.of();
   }
 
   @Override
   public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
-    if (args.length != 0) {
+    if (args.length != 1) {
 			return false;
 		}
     
@@ -70,49 +82,57 @@ public class CommandPostOpen implements TabExecutor {
       public void run() {
         Player player = (Player) sender;
 
-        List<PostBoxModel> playerPostBox = new ArrayList();
-        try {
-          playerPostBox.addAll(DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("receiver", player.getUniqueId()).query());
-        } catch (SQLException ex) {
-          Logger.getLogger(CommandPostOpen.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        // Messages can be async
-        if (playerPostBox.isEmpty()) {
-          new MessageHelper()
-            .prefix(true)
-            .path(CurrentEntries.LANG_CMD_POSTBOX_OPEN_EMPTY)
-            .locale(locale)
-            .receiver(sender)
-            .send();
-          return;
-        }
-        
-        Bukkit.getScheduler().runTask(PostBoxPlugin.getInstance(), new Runnable() {
-          @Override
-          public void run() {
-            Inventory inventory = Bukkit.getServer().createInventory(
-              null,
-              AppConfiguration.getInstance().getInt(CurrentEntries.CONF_SIZE.toString()),
-              new MessageHelper().locale(locale).path(CurrentEntries.LANG_CMD_POSTBOX_OPEN_CHEST_TITLE).string()
-            );
-            PostBoxPlugin.getInstance().getInventoryMappings().add(Triple.of(player.getUniqueId(), inventory, player.getUniqueId()));
-
-            int inventoryItemCount = 0;
-            for (PostBoxModel lPbo : playerPostBox) {
-              ItemStack localItemStack = lPbo.getItemStack();
-              ItemMeta localItemMeta = localItemStack.getItemMeta();
-
-              localItemStack.setItemMeta(localItemMeta);
-              inventory.setItem(inventoryItemCount++, localItemStack);
-            }
-
-            player.openInventory(inventory);
+        PostBoxPlugin.getInstance().getLuckPermsApi().getUserManager().lookupUniqueId(args[0]).whenComplete((targetUuid, exception) -> {
+          if (exception != null) {
+            // Handle failed name resolving
+            return;
           }
+
+          List<PostBoxModel> playerPostBox = new ArrayList();
+
+          try {
+            playerPostBox.addAll(DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("receiver", targetUuid).query());
+          } catch (SQLException ex) {
+            Logger.getLogger(CommandPostBoxOpen.class.getName()).log(Level.SEVERE, null, ex);
+          }
+
+          if (playerPostBox.isEmpty()) {
+            new MessageHelper()
+              .prefix(true)
+              .path(CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_EMPTY)
+              .locale(locale)
+              .receiver(sender)
+              .send();
+            return;
+          }
+
+          Bukkit.getScheduler().runTask(PostBoxPlugin.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+              Inventory inventory = Bukkit.getServer().createInventory(
+                null,
+                AppConfiguration.getInstance().getInt(CurrentEntries.CONF_SIZE.toString()),
+                new MessageHelper().locale(locale).path(CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_CHEST_TITLE).string()
+                  .replace("%player", args[0])
+              );
+              PostBoxPlugin.getInstance().getInventoryMappings().add(Triple.of(player.getUniqueId(), inventory, targetUuid));
+              int inventoryItemCount = 0;
+
+              for (PostBoxModel lPbo : playerPostBox) {
+                ItemStack localItemStack = lPbo.getItemStack();
+                ItemMeta localItemMeta = localItemStack.getItemMeta();
+
+                localItemStack.setItemMeta(localItemMeta);
+                inventory.setItem(inventoryItemCount++, localItemStack);
+              }
+
+              player.openInventory(inventory);
+            }
+          });
         });
       }
     });
-    
+        
     return true;
   }
 }

@@ -1,14 +1,14 @@
 package at.joestr.postbox;
 
-import at.joestr.postbox.commands.CommandPostOpen;
-import at.joestr.postbox.commands.CommandPostUpdate;
-import at.joestr.postbox.commands.CommandPostSend;
+import at.joestr.postbox.commands.CommandPostBoxOpen;
+import at.joestr.postbox.commands.CommandPostBoxUpdate;
+import at.joestr.postbox.commands.CommandPostBoxSend;
 import java.util.HashMap;
 import java.util.UUID;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import at.joestr.postbox.commands.CommandPost;
-import at.joestr.postbox.commands.CommandPostOpenOther;
+import at.joestr.postbox.commands.CommandPostBox;
+import at.joestr.postbox.commands.CommandPostBoxOpenOther;
 import at.joestr.postbox.configuration.AppConfiguration;
 import at.joestr.postbox.configuration.CurrentEntries;
 import at.joestr.postbox.configuration.DatabaseConfiguration;
@@ -75,11 +75,11 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
 			Bukkit.getUpdateFolderFile()
 		);
     
-    this.commandMap.put("postbox", new CommandPost());
-    this.commandMap.put("postbox-open", new CommandPostOpen());
-    this.commandMap.put("postbox-openother", new CommandPostOpenOther());
-    this.commandMap.put("postbox-send", new CommandPostSend(this));
-    this.commandMap.put("postbox-update", new CommandPostUpdate(this));
+    this.commandMap.put("postbox", new CommandPostBox());
+    this.commandMap.put("postbox-open", new CommandPostBoxOpen());
+    this.commandMap.put("postbox-openother", new CommandPostBoxOpenOther());
+    this.commandMap.put("postbox-send", new CommandPostBoxSend(this));
+    this.commandMap.put("postbox-update", new CommandPostBoxUpdate(this));
     
     this.registerCommands();
     this.registerListeners();

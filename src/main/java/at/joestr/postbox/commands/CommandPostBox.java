@@ -19,7 +19,7 @@ import org.bukkit.entity.Player;
  *
  * @author joestr
  */
-public class CommandPost implements TabExecutor {
+public class CommandPostBox implements TabExecutor {
   @Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		return ImmutableList.of();

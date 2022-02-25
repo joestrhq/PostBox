@@ -14,9 +14,9 @@ import org.bukkit.command.TabExecutor;
  *
  * @author joestr
  */
-public class CommandPostUpdate implements TabExecutor {
+public class CommandPostBoxUpdate implements TabExecutor {
 
-  public CommandPostUpdate(PostBoxPlugin aThis) {
+  public CommandPostBoxUpdate(PostBoxPlugin aThis) {
   }
 
   @Override

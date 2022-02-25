@@ -34,9 +34,9 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author joestr
  */
-public class CommandPostSend implements TabExecutor {
+public class CommandPostBoxSend implements TabExecutor {
 
-  public CommandPostSend(PostBoxPlugin aThis) {
+  public CommandPostBoxSend(PostBoxPlugin aThis) {
   }
 
   @Override
@@ -153,7 +153,7 @@ public class CommandPostSend implements TabExecutor {
         Bukkit.getScheduler().callSyncMethod(PostBoxPlugin.getInstance(), () -> {
           player.getInventory().addItem(itemstack); return true;
         });
-        Logger.getLogger(CommandPostSend.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(CommandPostBoxSend.class.getName()).log(Level.SEVERE, null, ex);
       }
 
       new MessageHelper()

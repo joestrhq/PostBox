@@ -29,5 +29,5 @@ commands:
     available: '[""%prefix,{"text":"A new version is available ","color":"green"},{"text":"here","underlined":true,"color":"gray","clickEvent":{"action":"open_url","value":"%update$downloadUrl"},"hoverEvent":{"action":"show_text","value":{"text":"%update$downloadUrl","color":"white"}}},{"text":".","color":"green"}]'
     downloaded: '[""%prefix,{"text":"The new version is in the update-folder!","color":"green"}]'
 events:
-  message_on_join: '[""%prefix,{"text":"You received mail. Click here to open your PostBox!","color":"aqua","clickEvent":{"action":"run_command","value":"/postbox-open"},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-open","color":"white"}}}]'
+  message_on_join: '[""%prefix,{"text":"You have received mail. Click here to open your PostBox!","color":"aqua","clickEvent":{"action":"run_command","value":"/postbox-open"},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-open","color":"white"}}}]'
   inventory_full: '[""%prefix,{"text":"Your inventory is full!","color":"red"}]'
