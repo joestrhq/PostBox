@@ -19,7 +19,7 @@ commands:
     chest_title: "Your PostBox"
     empty: '[""%prefix,{"text":"Deine PostBox ist leer!","color":"red"}]'
   postbox-openother:
-    chest_title: "PostBox of %player"
+    chest_title: "PostBox von %playername"
     empty: '[""%prefix,{"text":"The PostBox of ","color":"red"},{"text":"%playername","color":"white"},{"text":" is empty!","color":"red"}]'
   postbox-update:
     false: '[""%prefix,{"text":"Updates wurden deaktiviert!","color":"red"}]'

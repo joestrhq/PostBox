@@ -88,6 +88,16 @@ public class CommandPostBoxOpenOther implements TabExecutor {
             return;
           }
 
+          if (targetUuid == null) {
+            new MessageHelper()
+              .prefix(true)
+              .path(CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_EMPTY)
+              .locale(locale)
+              .receiver(sender)
+              .send();
+            return;
+          }
+          
           List<PostBoxModel> playerPostBox = new ArrayList();
 
           try {
@@ -102,6 +112,7 @@ public class CommandPostBoxOpenOther implements TabExecutor {
               .path(CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_EMPTY)
               .locale(locale)
               .receiver(sender)
+              .modify((s) -> s.replace("%playername", args[0]))
               .send();
             return;
           }
@@ -113,7 +124,7 @@ public class CommandPostBoxOpenOther implements TabExecutor {
                 null,
                 AppConfiguration.getInstance().getInt(CurrentEntries.CONF_SIZE.toString()),
                 new MessageHelper().locale(locale).path(CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_CHEST_TITLE).string()
-                  .replace("%player", args[0])
+                  .replace("%playername", args[0])
               );
               PostBoxPlugin.getInstance().getInventoryMappings().add(Triple.of(player.getUniqueId(), inventory, targetUuid));
               int inventoryItemCount = 0;

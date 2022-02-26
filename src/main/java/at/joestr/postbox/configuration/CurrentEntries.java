@@ -38,7 +38,7 @@ public enum CurrentEntries {
   LANG_CMD_POSTBOX_SEND_SEND_EMPTY("commands.postbox-send.send_empty", new int[]{1}),
 	LANG_CMD_POSTBOX_SEND_SUCCESS_RECEIVER("commands.postbox-send.success_receive", new int[]{1}),
   LANG_CMD_POSTBOX_SEND_SUCCESS_SENDER("commands.postbox-send.success_sender", new int[]{1}),
-	LANG_CMD_POSTBOX_SEND_RECEIPIENT_FULL("commands.postbox-send.recepient_full", new int[]{1}),
+	LANG_CMD_POSTBOX_SEND_RECEIPIENT_FULL("commands.postbox-send.receipient_full", new int[]{1}),
 	LANG_CMD_POSTBOX_OPEN_CHEST_TITLE("commands.postbox-open.chest_title", new int[]{1}),
 	LANG_CMD_POSTBOX_OPEN_EMPTY("commands.postbox-open.empty", new int[]{1}),
   LANG_CMD_POSTBOX_OPENOTHER_CHEST_TITLE("commands.postbox-openother.chest_title", new int[]{1}),

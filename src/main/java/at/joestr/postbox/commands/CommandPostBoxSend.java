@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -94,7 +95,7 @@ public class CommandPostBoxSend implements TabExecutor {
       new MessageHelper()
         .prefix(true)
         .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_RECEIVER_NEVER_PLAYED)
-        .modify(s -> s.replace("%player", strings[0]))
+        .modify(s -> s.replace("%playername", strings[0]))
         .locale(locale)
         .receiver(cs)
         .send();
@@ -103,7 +104,7 @@ public class CommandPostBoxSend implements TabExecutor {
     
     ItemStack itemstack = player.getInventory().getItemInMainHand();
 
-    if (itemstack == null) {
+    if (itemstack.getType() != Material.VOID_AIR) {
       new MessageHelper()
         .prefix(true)
         .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SEND_EMPTY)
@@ -133,7 +134,7 @@ public class CommandPostBoxSend implements TabExecutor {
           .prefix(true)
           .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_RECEIPIENT_FULL)
           .locale(locale)
-          .modify(s -> s.replace("%player", strings[0]))
+          .modify(s -> s.replace("%playername", strings[0]))
           .receiver(cs)
           .send();
         return;
@@ -160,7 +161,7 @@ public class CommandPostBoxSend implements TabExecutor {
         .prefix(true)
         .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_SENDER)
         .locale(locale)
-        .modify(s -> s.replace("%player", strings[0]))
+        .modify(s -> s.replace("%playername", strings[0]))
         .receiver(cs)
         .send();
 
@@ -169,7 +170,7 @@ public class CommandPostBoxSend implements TabExecutor {
           .prefix(true)
           .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_RECEIVER)
           .locale(locale)
-          .modify(s -> s.replace("%player", strings[0]))
+          .modify(s -> s.replace("%playername", strings[0]))
           .receiver((CommandSender) receiver)
           .send();
       }
