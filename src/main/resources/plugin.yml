@@ -1,10 +1,11 @@
 main: '${project.groupId}.${project.artifactId}.PostBoxPlugin'
 name: '${project.name}'
 version: '${project.version}'
-description: 'Sending items to otjer players.'
+api-version: '1.18'
+description: 'Sending items to other players.'
 author: 'joestr'
 authors: ['2YB', '9YB'] 
-website: https://projects.joestr.at/postbox/
+website: 'https://projects.joestr.at/postbox/'
 database: true
 #depend: [WorldEdit, WorldGuard]
 softdepend: [LuckPerms]
@@ -42,7 +43,6 @@ commands:
 permissions:
   postbox.commands.*:
     description: Allows the usage all commands provided by the PostBox plugin.
-    default: op
     children:
       postbox.commands.postbox: true
       postbox.commands.postbox-send: true
@@ -56,7 +56,6 @@ permissions:
       postbox.commands.postbox: true
       postbox.commands.postbox-send: true
       postbox.commands.postbox-open: true
-      postbox.commands.postbox-update: true
   postbox.presets.admin:
     description: Allows admin usage for the PostBox plugin.
     default: op

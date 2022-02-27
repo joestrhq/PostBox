@@ -8,16 +8,14 @@ import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.AppConfiguration;
 import at.joestr.postbox.configuration.CurrentEntries;
 import at.joestr.postbox.configuration.DatabaseConfiguration;
-import at.joestr.postbox.configuration.DatabaseModels;
 import at.joestr.postbox.configuration.DatabaseModels.PostBoxModel;
 import at.joestr.postbox.configuration.LocaleHelper;
 import at.joestr.postbox.configuration.MessageHelper;
+import at.joestr.postbox.utils.PostBoxUtils;
 import java.sql.SQLException;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -104,10 +102,11 @@ public class CommandPostBoxSend implements TabExecutor {
     
     ItemStack itemstack = player.getInventory().getItemInMainHand();
 
-    if (itemstack.getType() != Material.VOID_AIR) {
+    if (itemstack.getType() == Material.AIR) {
       new MessageHelper()
         .prefix(true)
         .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SEND_EMPTY)
+        .modify(s -> s.replace("%playername", strings[0]))
         .locale(locale)
         .receiver(cs)
         .send();
@@ -117,63 +116,74 @@ public class CommandPostBoxSend implements TabExecutor {
     player.getInventory().clear(player.getInventory().first(itemstack));
     
     Bukkit.getScheduler().runTaskAsynchronously(PostBoxPlugin.getInstance(), () -> {
-      List<PostBoxModel> llPbo = null;
-      try {
-        llPbo = DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("receiver", receiver.getUniqueId()).query();
-      } catch (SQLException ex) {
-        Bukkit.getScheduler().callSyncMethod(PostBoxPlugin.getInstance(), () -> {
-          player.getInventory().addItem(itemstack); return true;
-        });
-        // TODO: send message if exception
-        player.sendMessage("Exception");
-        return;
-      }
+      PostBoxUtils.resolveName(strings[0]).whenComplete((targetUuid, exception) -> {
+        if (exception != null) {
+          // TODO: Handle resolution error
+          return;
+        }
+        
+        List<PostBoxModel> llPbo = null;
+        try {
+          llPbo = DatabaseConfiguration.getInstance().getPostBoxDao().queryBuilder().where().eq("receiver", targetUuid).query();
+        } catch (SQLException ex) {
+          Bukkit.getScheduler().callSyncMethod(PostBoxPlugin.getInstance(), () -> {
+            player.getInventory().addItem(itemstack); return true;
+          });
+          // TODO: send message if exception
+          player.sendMessage("Exception");
+          return;
+        }
 
-      if (llPbo.size() == AppConfiguration.getInstance().getInt(CurrentEntries.CONF_SIZE.toString())) {
+        if (llPbo.size() == AppConfiguration.getInstance().getInt(CurrentEntries.CONF_SIZE.toString())) {
+          new MessageHelper()
+            .prefix(true)
+            .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_RECEIPIENT_FULL)
+            .modify(s -> s.replace("%playername", strings[0]))
+            .locale(locale)
+            .receiver(cs)
+            .send();
+
+          Bukkit.getScheduler().callSyncMethod(PostBoxPlugin.getInstance(), () -> {
+            player.getInventory().addItem(itemstack); return true;
+          });
+          return;
+        }
+
+        PostBoxModel newPostBoxEntry = new PostBoxModel();
+        newPostBoxEntry.setReceiver(targetUuid);
+        newPostBoxEntry.setItemStack(itemstack);
+        newPostBoxEntry.setTimestamp(Instant.now());
+        newPostBoxEntry.setSender(player.getUniqueId());
+
+        try {
+          DatabaseConfiguration.getInstance().getPostBoxDao().create(
+            newPostBoxEntry
+          );
+        } catch (SQLException ex) {
+          Bukkit.getScheduler().callSyncMethod(PostBoxPlugin.getInstance(), () -> {
+            player.getInventory().addItem(itemstack); return true;
+          });
+          Logger.getLogger(CommandPostBoxSend.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         new MessageHelper()
           .prefix(true)
-          .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_RECEIPIENT_FULL)
-          .locale(locale)
+          .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_SENDER)
           .modify(s -> s.replace("%playername", strings[0]))
+          .locale(locale)
           .receiver(cs)
           .send();
-        return;
-      }
-      
-      PostBoxModel newPostBoxEntry = new PostBoxModel();
-      newPostBoxEntry.setReceiver(receiver.getUniqueId());
-      newPostBoxEntry.setItemStack(itemstack);
-      newPostBoxEntry.setTimestamp(Instant.now());
-      newPostBoxEntry.setSender(player.getUniqueId());
 
-      try {
-        DatabaseConfiguration.getInstance().getPostBoxDao().create(
-          newPostBoxEntry
-        );
-      } catch (SQLException ex) {
-        Bukkit.getScheduler().callSyncMethod(PostBoxPlugin.getInstance(), () -> {
-          player.getInventory().addItem(itemstack); return true;
-        });
-        Logger.getLogger(CommandPostBoxSend.class.getName()).log(Level.SEVERE, null, ex);
-      }
-
-      new MessageHelper()
-        .prefix(true)
-        .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_SENDER)
-        .locale(locale)
-        .modify(s -> s.replace("%playername", strings[0]))
-        .receiver(cs)
-        .send();
-
-      if (receiver.isOnline()) {
-        new MessageHelper()
-          .prefix(true)
-          .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_RECEIVER)
-          .locale(locale)
-          .modify(s -> s.replace("%playername", strings[0]))
-          .receiver((CommandSender) receiver)
-          .send();
-      }
+        if (receiver.isOnline()) {
+          new MessageHelper()
+            .prefix(true)
+            .path(CurrentEntries.LANG_CMD_POSTBOX_SEND_SUCCESS_RECEIVER)
+            .modify(s -> s.replace("%playername", strings[0]))
+            .locale(locale)
+            .receiver((CommandSender) receiver)
+            .send();
+        }
+      });
     });
     
     return true;

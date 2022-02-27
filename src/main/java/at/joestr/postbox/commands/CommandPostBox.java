@@ -7,7 +7,6 @@ package at.joestr.postbox.commands;
 import at.joestr.postbox.configuration.CurrentEntries;
 import at.joestr.postbox.configuration.LocaleHelper;
 import at.joestr.postbox.configuration.MessageHelper;
-import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Locale;
 import org.bukkit.command.Command;
@@ -22,7 +21,7 @@ import org.bukkit.entity.Player;
 public class CommandPostBox implements TabExecutor {
   @Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		return ImmutableList.of();
+		return List.of();
 	}
   
   @Override

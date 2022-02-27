@@ -33,6 +33,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.inventory.Inventory;
+import org.enginehub.squirrelid.resolver.HttpRepositoryService;
+import org.enginehub.squirrelid.resolver.ProfileService;
 
 public class PostBoxPlugin extends JavaPlugin implements Listener {
   private static final Logger LOG = Logger.getLogger(PostBoxPlugin.class.getName());
@@ -41,6 +43,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   private HashMap<String, TabExecutor> commandMap;
   private Updater updater;
   private LuckPerms luckPermsApi;
+  private ProfileService profileService;
   private ArrayList<Triple<UUID, Inventory, UUID>> inventoryMappings = new ArrayList<>();
   
   @Override
@@ -64,6 +67,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
 			this.getServer().getPluginManager().disablePlugin(this);
 		}
     this.loadExternalPluginIntegrations();
+    this.loadProfileService();
     
     this.updater = new Updater(
 			AppConfiguration.getInstance().getBool(CurrentEntries.CONF_UPDATER_ENABLED.toString()),
@@ -153,8 +157,12 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
     try {
       this.luckPermsApi = LuckPermsProvider.get();
     } catch (IllegalStateException ex) {
-      LOG.log(Level.WARNING, "LuckPerms API not found. Using conventional method for resolving player names!");
+      LOG.log(Level.WARNING, "LuckPerms API not found. Using conventional methods for resolving player names!");
     }
+  }
+  
+  private void loadProfileService() {
+    this.profileService = HttpRepositoryService.forMinecraft();
   }
   
   public static PostBoxPlugin getInstance() {
@@ -171,6 +179,10 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
 
   public LuckPerms getLuckPermsApi() {
     return luckPermsApi;
+  }
+
+  public ProfileService getProfileService() {
+    return profileService;
   }
 
   public ArrayList<Triple<UUID, Inventory, UUID>> getInventoryMappings() {
