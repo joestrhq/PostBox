@@ -1,0 +1,10 @@
+version: 1
+jdbcUri: 'jdbc:sqlite:./plugins/PostBox/postbox.db'
+size: 9
+# Updater config
+updater:
+  enabled: true
+  downloadToPluginUpdateFolder: true
+  targetUrl: 'https://github.com/joestrhq/PostBox/releases/latest/download/'
+  pomPropertiesFile: 'pom.properties'
+  classifier: 'shaded'

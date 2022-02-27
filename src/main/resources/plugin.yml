@@ -1,27 +1,67 @@
- name: PostBox
- version: ${project.version}
- description: PostBox - Ein Post-System.
- author: joestr
- authors: [2YB, 9YB, xandi3000] 
- website: https://repo.joestr.xyz/PostBox
- 
- main: xyz.joestr.postbox.PostBoxPlugin
- database: false
- #depend: [WorldEdit, WorldGuard]
- 
- commands:
-   post:
-     description: Zeigt die untergeordneten Befehle vom "/post"-Befehl.
-     #permission: post.use
-     #permission-message: Du hast keine Berechtigung fuer den "/post"-Befehl.
-     usage: Benutze bitte den "/post"-Befehl.
- 
- permissions:
-   post.use:
-     description: Berechtigung fuer die untergeordneten Benutzer-Befehle vom "/post"-Befehl.
-     default: true
-   post.admin:
-     description: Berechtigung fuer die untergeordneten Benutzer- und Admin-Befehle vom "/post"-Befehl.
-     default: op
-     children:
-       post.use: true
+main: '${project.groupId}.${project.artifactId}.PostBoxPlugin'
+name: '${project.name}'
+version: '${project.version}'
+api-version: '1.18'
+description: 'Sending items to other players.'
+author: 'joestr'
+authors: ['2YB', '9YB'] 
+website: 'https://projects.joestr.at/postbox/'
+database: true
+#depend: [WorldEdit, WorldGuard]
+softdepend: [LuckPerms]
+commands:
+  postbox:
+    description: Shows the help for the PostBox plugin.
+    #aliases: [pbox]
+    permission: postbox.commands.postbox
+    permission-message: '§cYou are lacking permission §fpostbox.commands.postbox§c!'
+    usage: '§cSyntax error! Use: §f/<command>'
+  postbox-send:
+    description: Send items to other players.
+    #aliases: [pboxs]
+    permission: postbox.commands.postbox-send
+    permission-message: '§cYou are lacking permission §fpostbox.commands.postbox-send§c!'
+    usage: '§cSyntax error! Use: §f/<command>'
+  postbox-open:
+    description: Opens your PostBox.
+    #aliases: [pboxo]
+    permission: postbox.commands.postbox-open
+    permission-message: '§cYou are lacking permission §fpostbox.commands.postbox-open§c!'
+    usage: '§cSyntax error! Use: §f/<command>'
+  postbox-openother:
+    description: Opens another player's PostBox.
+    #aliases: [pboxoo]
+    permission: postbox.commands.postbox-openother
+    permission-message: '§cYou are lacking permission §fpostbox.commands.postbox-openother§c!'
+    usage: '§cSyntax error! Use: §f/<command>'
+  postbox-update:
+    description: Updates the plugin.
+    #aliases: [pboxu]
+    permission: postbox.commands.postbox-update
+    permission-message: '§cYou are lacking permission §fpostbox.commands.postbox-update§c!'
+    usage: '§cSyntax error! Use: §f/<command>'
+permissions:
+  postbox.commands.*:
+    description: Allows the usage all commands provided by the PostBox plugin.
+    children:
+      postbox.commands.postbox: true
+      postbox.commands.postbox-send: true
+      postbox.commands.postbox-open: true
+      postbox.commands.postbox-openother: true
+      postbox.commands.postbox-update: true
+  postbox.presets.basic:
+    description: Allows the basic usage for the PostBox plugin.
+    default: true
+    children:
+      postbox.commands.postbox: true
+      postbox.commands.postbox-send: true
+      postbox.commands.postbox-open: true
+  postbox.presets.admin:
+    description: Allows admin usage for the PostBox plugin.
+    default: op
+    children:
+      postbox.commands.postbox: true
+      postbox.commands.postbox-send: true
+      postbox.commands.postbox-open: true
+      postbox.commands.postbox-openother: true
+      postbox.commands.postbox-update: true

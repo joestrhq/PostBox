@@ -1,0 +1,33 @@
+version: 1
+prefix: ',{"text":"[","color":"dark_gray"},{"text":"PostBox","color":"dark_green"},{"text":"]","color":"dark_gray"},{"text":" "}'
+generic:
+  not_a_player: '[""%prefix,{"text":"This command can only be used by players!","color":"red"}]'
+commands:
+  postbox:
+    message_send: '[""%prefix,{"text":"» ","color":"gray"},{"text":"Verschicke das Item, welches du gerade in der Hand hälst","color":"gray","clickEvent":{"action":"suggest_command","value":"/postbox-send "},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-send <Spielername>","color":"white"}}}]'
+    message_open: '[""%prefix,{"text":"» ","color":"gray"},{"text":"Öffne deine PostBox","color":"gray","clickEvent":{"action":"run_command","value":"/postbox-open"},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-open","color":"white"}}}]'
+    message_openother: '[""%prefix,{"text":"» ","color":"gray"},{"text":"Öffne die PostBox eines anderen Spielers","color":"gray","clickEvent":{"action":"suggest_command","value":"/postbox-openother "},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-openother <Spielername>","color":"white"}}}]'
+    message_update: '[""%prefix,{"text":"» ","color":"gray"},{"text":"Prüfe auf Updates","color":"gray","clickEvent":{"action":"run_command","value":"/postbox-update"},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-update","color":"white"}}}]'
+  postbox-send:
+    self: '[""%prefix,{"text":"Du kannst Items nicht an dich selber schicken!","color":"red"}]'
+    receiver_never_played: '[""%prefix,{"text":"Der Spieler ","color":"red"},{"text":"%playername","color":"white"},{"text":" hat noch nie zuvor auf diesem Server gespielt!","color":"red"}]'
+    send_empty: '[""%prefix,{"text":"Du kannst nichts leeres versenden!","color":"red"}]'
+    success_sender: '[""%prefix,{"text":"Das Item wurde an ","color":"green"},{"text":"%playername","color":"white"},{"text":" geschickt!","color":"green"}]'
+    success_receiver: '[""%prefix,{"text":"Du hast ein Item erhalten! Öffne jetzt deine PostBox!","color":"aqua","clickEvent":{"action":"run_command","value":"/postbox-open"},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-open","color":"white"}}}]'
+    receipient_full: '[""%prefix,{"text":"Die PostBox von ","color":"red"},{"text":"%playername","color":"white"},{"text":" ist schon voll!","color":"red"}]'
+  postbox-open:
+    chest_title: "Your PostBox"
+    empty: '[""%prefix,{"text":"Deine PostBox ist leer!","color":"red"}]'
+  postbox-openother:
+    chest_title: "PostBox von %playername"
+    empty: '[""%prefix,{"text":"The PostBox of ","color":"red"},{"text":"%playername","color":"white"},{"text":" is empty!","color":"red"}]'
+  postbox-update:
+    false: '[""%prefix,{"text":"Updates wurden deaktiviert!","color":"red"}]'
+    asyncstart: '[""%prefix,{"text":"Prüfe auf Updates ...","color":"aqua"}]'
+    error: '[""%prefix,{"text":"Ein Fehler beim Download ist aufgetreten!","color":"red"}]'
+    uptodate: '[""%prefix,{"text":"Du benutzt schon die aktuellste Version!","color":"green"}]'
+    available: '[""%prefix,{"text":"Eine neue Version ist verfügbar","color":"green"},{"text":"here","underlined":true,"color":"gray","clickEvent":{"action":"open_url","value":"%update$downloadUrl"},"hoverEvent":{"action":"show_text","value":{"text":"%update$downloadUrl","color":"white"}}},{"text":".","color":"green"}]'
+    downloaded: '[""%prefix,{"text":"Die neue Version wurde ins update-Verzeichnis gelegt!","color":"green"}]'
+events:
+  message_on_join: '[""%prefix,{"text":"Du hast ein Item erhalten! Öffne jetzt deine PostBox!","color":"aqua","clickEvent":{"action":"run_command","value":"/postbox-open"},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-open","color":"white"}}}]'
+  inventory_full: '[""%prefix,{"text":"Ein Inventar ist voll!","color":"red"}]'
