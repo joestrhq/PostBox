@@ -1,0 +1,39 @@
+site_name: PostBox
+site_description: Documentation for PostBox Spigot plugin
+site_author: Strasser, Joel;
+site_url: https://projects.joestr.at/postbox/
+
+repo_name: PostBox
+repo_url: https://github.com/joestrhq/PostBox
+edit_uri: http://github.com/joestrhq/PostBox/edit/website/src/doc/docs
+
+copyright: Copyright &copy; <a href="https://www.joestr.at">joestrhq</a> and all contributors
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Configuration: configuration.md
+  - Usage: usage.md
+  - About: about.md
+theme:
+  name: material
+  palette:
+    primary: 'blue'
+    accent: 'blue'
+
+plugins:
+  - markdownextradata
+  - search:
+      lang: en
+      prebuild_index: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/joestrhq
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/joestrhq
+    - icon: fontawesome/brands/instagram
+      link: https://www.instagram.com/joestrhq
+    - icon: fontawesome/brands/keybase
+      link: https://keybase.io/team/joestrhq
