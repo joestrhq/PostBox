@@ -1,5 +1,5 @@
 # PostBox
-![Build Status](https://shields.io/endpoint?url=https://files.joestr.at/ci-build-status/cctray.php?project_name=PIP.github.joestrhq.CartJets_master)
+![Build Status](https://shields.io/endpoint?url=https://files.joestr.at/ci-build-status/cctray.php?project_name=PIP.github.joestrhq.PostBox_master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/1db7872f0dc6536049c6/maintainability)](https://codeclimate.com/github/joestrhq/PostBox/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/1db7872f0dc6536049c6/test_coverage)](https://codeclimate.com/github/joestrhq/PostBox/test_coverage)
 [![License](https://img.shields.io/static/v1?label=License&message=MIT&color=blue)](https://github.com/joestrhq/PostBox/blob/master/LICENSE)
