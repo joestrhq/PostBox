@@ -9,7 +9,7 @@ PostBox is a Spigot plugin which give you the possibility to send items to other
 
 ## Installtion
 
-Head to over the [latest releases](https://github.com/joestrhq/PostBox/releases/tag/v1.0.0).
+Head to over the [latest release](https://github.com/joestrhq/PostBox/releases/tag/v1.0.0).
 
 Download the `jar` file (currently `postbox-1.0.0-shaded.jar`).
 
