@@ -6,7 +6,7 @@
  */
 
 plugins {
-    id 'ru.vyarus.mkdocs' version '2.2.0' apply true
+    id 'ru.vyarus.mkdocs' version '2.3.0' apply true
 }
 
 mkdocs {
@@ -15,6 +15,6 @@ mkdocs {
         rootRedirect = true
     }
     extras = [
-        'dependencyVersion': '0.1.0-SNAPSHOT'
+        'dependencyVersion': '1.0.0'
     ]
 }
