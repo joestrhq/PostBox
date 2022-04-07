@@ -1,5 +1,4 @@
 # Installation
-
 Use following table to identify the version which is compatible for your Spigot server:  
 
 |Plugin version|Server versions tested|
