@@ -1,10 +1,29 @@
+//
+// MIT License
+//
+// Copyright (c) 2022 Joel Strasser
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+
 package at.joestr.postbox.event;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.CurrentEntries;
 import at.joestr.postbox.configuration.DatabaseConfiguration;
@@ -17,12 +36,16 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryClickListener implements Listener {
 
-  public InventoryClickListener() {
-  }
+  public InventoryClickListener() {}
 
   // Highest Priority and ignore cancelled events
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
@@ -30,15 +53,17 @@ public class InventoryClickListener implements Listener {
     Player player = (Player) event.getWhoClicked();
     Locale locale = LocaleHelper.resolve(player.getLocale());
 
-    if (!PostBoxPlugin.getInstance().getInventoryMappings().stream().anyMatch(t -> t.getLeft().equals(player.getUniqueId()))) {
+    if (!PostBoxPlugin.getInstance().getInventoryMappings().stream()
+        .anyMatch(t -> t.getLeft().equals(player.getUniqueId()))) {
       return;
     }
-    
-    if (!PostBoxPlugin.getInstance().getInventoryMappings().stream().anyMatch(t -> t.getMiddle().equals(event.getClickedInventory()))) {
+
+    if (!PostBoxPlugin.getInstance().getInventoryMappings().stream()
+        .anyMatch(t -> t.getMiddle().equals(event.getClickedInventory()))) {
       event.setCancelled(true);
       return;
     }
-    
+
     if (event.getCurrentItem() == null) {
       return;
     }
@@ -47,56 +72,69 @@ public class InventoryClickListener implements Listener {
       event.setCancelled(true);
       player.closeInventory();
       new MessageHelper()
-        .prefix(true)
-        .path(CurrentEntries.LANG_EVT_INVENTORY_FULL)
-        .receiver(player)
-        .locale(locale)
-        .send();
+          .prefix(true)
+          .path(CurrentEntries.LANG_EVT_INVENTORY_FULL)
+          .receiver(player)
+          .locale(locale)
+          .send();
       return;
     }
-    
+
     ItemStack itemStack = event.getCurrentItem();
-    
-    Bukkit.getScheduler().runTaskAsynchronously(PostBoxPlugin.getInstance(), () -> {
-      PostBoxModel postBoxModelEntry = null;
-      try {
-        postBoxModelEntry = DatabaseConfiguration.getInstance()
-          .getPostBoxDao()
-          .queryBuilder()
-          .where()
-          .eq("receiver", PostBoxPlugin.getInstance().getInventoryMappings().stream().filter(t -> t.getLeft().equals(player.getUniqueId())).findFirst().get().getRight())
-          .query()
-          .get(event.getRawSlot());
-      } catch (SQLException ex) {
-        return;
-      }
-          
-      try {
-        DeleteBuilder<PostBoxModel, String> deleteBuilder = DatabaseConfiguration.getInstance().getPostBoxDao().deleteBuilder();
-        deleteBuilder.where().eq("id", postBoxModelEntry.getId());
-        deleteBuilder.delete();
-      } catch (SQLException ex) {
-        Logger.getLogger(InventoryClickListener.class.getName()).log(Level.SEVERE, null, ex);
-      }
-      
-      // Circumvent 
-      final PostBoxModel get = postBoxModelEntry;
-            
-      Bukkit.getScheduler().runTask(PostBoxPlugin.getInstance(), () -> {
-        player.getInventory().addItem(
-          get.getItemStack()
-        );
-        
-        event.getWhoClicked().setItemOnCursor(null);
 
-        ItemStack[] contents = event.getClickedInventory().getContents();
-        event.getInventory().clear();
+    Bukkit.getScheduler()
+        .runTaskAsynchronously(
+            PostBoxPlugin.getInstance(),
+            () -> {
+              PostBoxModel postBoxModelEntry = null;
+              try {
+                postBoxModelEntry =
+                    DatabaseConfiguration.getInstance()
+                        .getPostBoxDao()
+                        .queryBuilder()
+                        .where()
+                        .eq(
+                            "receiver",
+                            PostBoxPlugin.getInstance().getInventoryMappings().stream()
+                                .filter(t -> t.getLeft().equals(player.getUniqueId()))
+                                .findFirst()
+                                .get()
+                                .getRight())
+                        .query()
+                        .get(event.getRawSlot());
+              } catch (SQLException ex) {
+                return;
+              }
 
-        for (ItemStack i : contents) {
-          if (i == null) continue;
-          event.getInventory().addItem(i);
-        }
-      });
-    });
+              try {
+                DeleteBuilder<PostBoxModel, String> deleteBuilder =
+                    DatabaseConfiguration.getInstance().getPostBoxDao().deleteBuilder();
+                deleteBuilder.where().eq("id", postBoxModelEntry.getId());
+                deleteBuilder.delete();
+              } catch (SQLException ex) {
+                Logger.getLogger(InventoryClickListener.class.getName())
+                    .log(Level.SEVERE, null, ex);
+              }
+
+              // Circumvent
+              final PostBoxModel get = postBoxModelEntry;
+
+              Bukkit.getScheduler()
+                  .runTask(
+                      PostBoxPlugin.getInstance(),
+                      () -> {
+                        player.getInventory().addItem(get.getItemStack());
+
+                        event.getWhoClicked().setItemOnCursor(null);
+
+                        ItemStack[] contents = event.getClickedInventory().getContents();
+                        event.getInventory().clear();
+
+                        for (ItemStack i : contents) {
+                          if (i == null) continue;
+                          event.getInventory().addItem(i);
+                        }
+                      });
+            });
   }
 }
