@@ -1,4 +1,4 @@
-version: 1
+version: 2
 prefix: ',{"text":"[","color":"dark_gray"},{"text":"PostBox","color":"dark_green"},{"text":"]","color":"dark_gray"},{"text":" "}'
 generic:
   not_a_player: '[""%prefix,{"text":"This command can only be used by players!","color":"red"}]'
@@ -18,9 +18,11 @@ commands:
   postbox-open:
     chest_title: "Your PostBox"
     empty: '[""%prefix,{"text":"Deine PostBox ist leer!","color":"red"}]'
+    playername_resolving_error: '[""%prefix,{"text":"Fehler beim Auflösen der Spielernamen!","color":"red"}]'
   postbox-openother:
     chest_title: "PostBox von %playername"
     empty: '[""%prefix,{"text":"The PostBox of ","color":"red"},{"text":"%playername","color":"white"},{"text":" is empty!","color":"red"}]'
+    playername_resolving_error: '[""%prefix,{"text":"Fehler beim Auflösen der Spielernamen!","color":"red"}]'
   postbox-update:
     false: '[""%prefix,{"text":"Updates wurden deaktiviert!","color":"red"}]'
     asyncstart: '[""%prefix,{"text":"Prüfe auf Updates ...","color":"aqua"}]'
