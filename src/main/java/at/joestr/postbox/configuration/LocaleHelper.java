@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.configuration;
 
 import java.util.Locale;
@@ -39,10 +38,10 @@ public class LocaleHelper {
     // Minecraft's format: e.g. de_de, en_gb
     String[] localeTagParts = locale.split("_");
 
-    Locale l =
-        localeTagParts.length > 1
-            ? new Locale(localeTagParts[0]) // Use the language part only.
-            : Locale.ENGLISH;
+    Locale l
+      = localeTagParts.length > 1
+        ? new Locale(localeTagParts[0]) // Use the language part only.
+        : Locale.ENGLISH;
     return l != null ? l : Locale.ENGLISH;
   }
 }

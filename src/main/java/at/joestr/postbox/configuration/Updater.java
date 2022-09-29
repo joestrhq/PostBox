@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.configuration;
 
 import com.vdurmont.semver4j.Semver;
@@ -51,13 +50,14 @@ public class Updater {
   }
 
   public class Update {
+
     private Semver currentVersion;
     private Semver newVersion;
     private String downloadUrl;
     private LocalDateTime expiry;
 
     public Update(
-        Semver currentVersion, Semver newVersion, String downloadUrl, LocalDateTime expiry) {
+      Semver currentVersion, Semver newVersion, String downloadUrl, LocalDateTime expiry) {
       this.currentVersion = currentVersion;
       this.newVersion = newVersion;
       this.downloadUrl = downloadUrl;
@@ -120,13 +120,13 @@ public class Updater {
    * @param downloadFolder The folder where the download should be placed.
    */
   public Updater(
-      boolean enabled,
-      boolean download,
-      String currentVersion,
-      String targetUrl,
-      String pomProperties,
-      String classifier,
-      File downloadFolder) {
+    boolean enabled,
+    boolean download,
+    String currentVersion,
+    String targetUrl,
+    String pomProperties,
+    String classifier,
+    File downloadFolder) {
     this.enabled = enabled;
     this.download = download;
     this.currentVersion = new Semver(currentVersion, Semver.SemverType.IVY);
@@ -141,47 +141,51 @@ public class Updater {
 
   public CompletableFuture<State> checkForUpdate() {
     return CompletableFuture.supplyAsync(
-        () -> {
-          if (!enabled) return State.ERROR_OFF;
-
-          if ((lastUpdate == null) || (lastUpdate.getExpiry().isBefore(LocalDateTime.now()))) {
-            downloadPomProperties(pomPropsUrl);
-
-            Semver newVersion =
-                new Semver(
-                    pomProps.getProperty("version", "0.1.0-SNAPSHOT"), Semver.SemverType.IVY);
-
-            if (newVersion.isLowerThanOrEqualTo(currentVersion)) return State.SUCCESS_UPTODATE;
-
-            lastUpdate =
-                new Update(
-                    currentVersion,
-                    newVersion,
-                    new StringBuilder(targetUrl)
-                        .append(pomProps.getProperty("artifactId"))
-                        .append("-")
-                        .append(newVersion.getOriginalValue())
-                        .append(classifier.equalsIgnoreCase("") ? "" : "-" + classifier)
-                        .append(".jar")
-                        .toString(),
-                    LocalDateTime.now().plusHours(12));
-          }
-
-          if (!download) {
-            return State.SUCCESS_AVAILABLE;
-          }
-
-          if (download) {
-            this.downloadUpdateTo(downloadFolder);
-            return State.SUCCES_DOWNLOADED;
-          }
-
+      () -> {
+        if (!enabled) {
           return State.ERROR_OFF;
-        });
+        }
+
+        if ((lastUpdate == null) || (lastUpdate.getExpiry().isBefore(LocalDateTime.now()))) {
+          downloadPomProperties(pomPropsUrl);
+
+          Semver newVersion
+          = new Semver(
+            pomProps.getProperty("version", "0.1.0-SNAPSHOT"), Semver.SemverType.IVY);
+
+          if (newVersion.isLowerThanOrEqualTo(currentVersion)) {
+            return State.SUCCESS_UPTODATE;
+          }
+
+          lastUpdate
+          = new Update(
+            currentVersion,
+            newVersion,
+            new StringBuilder(targetUrl)
+              .append(pomProps.getProperty("artifactId"))
+              .append("-")
+              .append(newVersion.getOriginalValue())
+              .append(classifier.equalsIgnoreCase("") ? "" : "-" + classifier)
+              .append(".jar")
+              .toString(),
+            LocalDateTime.now().plusHours(12));
+        }
+
+        if (!download) {
+          return State.SUCCESS_AVAILABLE;
+        }
+
+        if (download) {
+          this.downloadUpdateTo(downloadFolder);
+          return State.SUCCES_DOWNLOADED;
+        }
+
+        return State.ERROR_OFF;
+      });
   }
 
   private void downloadPomProperties(String pomPropertiesUrl) {
-    try (InputStream inputStream = new URL(pomPropertiesUrl).openStream()) {
+    try ( InputStream inputStream = new URL(pomPropertiesUrl).openStream()) {
       this.pomProps.load(inputStream);
     } catch (IOException ex) {
       Logger.getGlobal().log(Level.SEVERE, "", ex);
@@ -191,7 +195,9 @@ public class Updater {
   private boolean downloadUpdateTo(File folder) {
     boolean result = false;
 
-    if (!folder.exists() || !folder.canWrite()) return result;
+    if (!folder.exists() || !folder.canWrite()) {
+      return result;
+    }
 
     URL downloadUrl = null;
     try {
@@ -199,13 +205,15 @@ public class Updater {
     } catch (MalformedURLException ex) {
       Logger.getLogger(Updater.class.getName()).log(Level.SEVERE, null, ex);
     }
-    if (downloadUrl == null) return result;
+    if (downloadUrl == null) {
+      return result;
+    }
 
-    try (InputStream newFile = downloadUrl.openStream()) {
+    try ( InputStream newFile = downloadUrl.openStream()) {
       Files.copy(
-          newFile,
-          new File(folder, pomProps.getProperty("artifactId") + ".jar").toPath(),
-          StandardCopyOption.REPLACE_EXISTING);
+        newFile,
+        new File(folder, pomProps.getProperty("artifactId") + ".jar").toPath(),
+        StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException ex) {
       Logger.getLogger(Updater.class.getName()).log(Level.SEVERE, null, ex);
     }

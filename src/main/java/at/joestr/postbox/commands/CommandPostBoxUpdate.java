@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.commands;
 
 import at.joestr.postbox.PostBoxPlugin;
@@ -35,20 +34,21 @@ import org.bukkit.command.TabExecutor;
  */
 public class CommandPostBoxUpdate implements TabExecutor {
 
-  public CommandPostBoxUpdate(PostBoxPlugin aThis) {}
+  public CommandPostBoxUpdate(PostBoxPlugin aThis) {
+  }
 
   @Override
   public List<String> onTabComplete(
-      CommandSender cs, Command cmnd, String string, String[] strings) {
+    CommandSender cs, Command cmnd, String string, String[] strings) {
     throw new UnsupportedOperationException(
-        "Not supported yet."); // Generated from
-                               // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      "Not supported yet."); // Generated from
+    // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
   }
 
   @Override
   public boolean onCommand(CommandSender cs, Command cmnd, String string, String[] strings) {
     throw new UnsupportedOperationException(
-        "Not supported yet."); // Generated from
-                               // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      "Not supported yet."); // Generated from
+    // nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
   }
 }
