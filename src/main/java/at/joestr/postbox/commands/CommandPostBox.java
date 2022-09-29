@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.commands;
 
 import at.joestr.postbox.configuration.CurrentEntries;
@@ -38,9 +37,10 @@ import org.bukkit.entity.Player;
  * @author joestr
  */
 public class CommandPostBox implements TabExecutor {
+
   @Override
   public List<String> onTabComplete(
-      CommandSender sender, Command command, String alias, String[] args) {
+    CommandSender sender, Command command, String alias, String[] args) {
     return List.of();
   }
 
@@ -50,55 +50,55 @@ public class CommandPostBox implements TabExecutor {
       return false;
     }
 
-    final Locale locale =
-        sender instanceof Player
-            ? LocaleHelper.resolve(((Player) sender).getLocale())
-            : Locale.ENGLISH;
+    final Locale locale
+      = sender instanceof Player
+        ? LocaleHelper.resolve(((Player) sender).getLocale())
+        : Locale.ENGLISH;
 
     if (!(sender instanceof Player)) {
       new MessageHelper()
-          .prefix(true)
-          .path(CurrentEntries.LANG_GEN_NOT_A_PLAYER)
-          .locale(locale)
-          .receiver(sender)
-          .send();
+        .prefix(true)
+        .path(CurrentEntries.LANG_GEN_NOT_A_PLAYER)
+        .locale(locale)
+        .receiver(sender)
+        .send();
       return true;
     }
 
     if (sender.hasPermission(CurrentEntries.PERM_CMD_POSTBOX_SEND.toString())) {
       new MessageHelper()
-          .prefix(true)
-          .path(CurrentEntries.LANG_CMD_POSTBOX_X_MSG_SEND)
-          .locale(locale)
-          .receiver(sender)
-          .send();
+        .prefix(true)
+        .path(CurrentEntries.LANG_CMD_POSTBOX_X_MSG_SEND)
+        .locale(locale)
+        .receiver(sender)
+        .send();
     }
 
     if (sender.hasPermission(CurrentEntries.PERM_CMD_POSTBOX_OPEN.toString())) {
       new MessageHelper()
-          .prefix(true)
-          .path(CurrentEntries.LANG_CMD_POSTBOX_X_MSG_OPEN)
-          .locale(locale)
-          .receiver(sender)
-          .send();
+        .prefix(true)
+        .path(CurrentEntries.LANG_CMD_POSTBOX_X_MSG_OPEN)
+        .locale(locale)
+        .receiver(sender)
+        .send();
     }
 
     if (sender.hasPermission(CurrentEntries.PERM_CMD_POSTBOX_OPENOTHER.toString())) {
       new MessageHelper()
-          .prefix(true)
-          .path(CurrentEntries.LANG_CMD_POSTBOX_X_MSG_OPENOTHER)
-          .locale(locale)
-          .receiver(sender)
-          .send();
+        .prefix(true)
+        .path(CurrentEntries.LANG_CMD_POSTBOX_X_MSG_OPENOTHER)
+        .locale(locale)
+        .receiver(sender)
+        .send();
     }
 
     if (sender.hasPermission(CurrentEntries.PERM_CMD_POSTBOX_UPDATE.toString())) {
       new MessageHelper()
-          .prefix(true)
-          .path(CurrentEntries.LANG_CMD_POSTBOX_X_MSG_UPDATE)
-          .locale(locale)
-          .receiver(sender)
-          .send();
+        .prefix(true)
+        .path(CurrentEntries.LANG_CMD_POSTBOX_X_MSG_UPDATE)
+        .locale(locale)
+        .receiver(sender)
+        .send();
     }
 
     return true;

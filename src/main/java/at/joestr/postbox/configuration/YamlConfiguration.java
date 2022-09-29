@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.configuration;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public abstract class YamlConfiguration {
   private Object lookupObject(String path, Map<Object, Object> configMap) {
     Map<Object, Object> subMap = new HashMap<>(configMap);
 
-    String[] splitted = path.contains(".") ? path.split("\\.") : new String[] {path};
+    String[] splitted = path.contains(".") ? path.split("\\.") : new String[]{path};
 
     for (int i = 0; i < splitted.length - 1; i++) {
       if (!subMap.containsKey(splitted[i])) {
