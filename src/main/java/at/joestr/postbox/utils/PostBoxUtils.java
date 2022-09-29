@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.utils;
 
 import at.joestr.postbox.PostBoxPlugin;
@@ -43,18 +42,18 @@ public class PostBoxUtils {
     }
 
     return CompletableFuture.supplyAsync(
-        () -> {
-          String result = null;
-          try {
-            Profile p = PostBoxPlugin.getInstance().getProfileService().findByUuid(uuid);
-            result = p.getName();
-          } catch (IOException ex) {
-            Logger.getLogger(PostBoxUtils.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (InterruptedException ex) {
-            Logger.getLogger(PostBoxUtils.class.getName()).log(Level.SEVERE, null, ex);
-          }
-          return result;
-        });
+      () -> {
+        String result = null;
+        try {
+          Profile p = PostBoxPlugin.getInstance().getProfileService().findByUuid(uuid);
+          result = p.getName();
+        } catch (IOException ex) {
+          Logger.getLogger(PostBoxUtils.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+          Logger.getLogger(PostBoxUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+      });
   }
 
   public static CompletableFuture<UUID> resolveName(String name) {
@@ -63,17 +62,17 @@ public class PostBoxUtils {
     }
 
     return CompletableFuture.supplyAsync(
-        () -> {
-          UUID result = null;
-          try {
-            Profile p = PostBoxPlugin.getInstance().getProfileService().findByName(name);
-            result = p.getUniqueId();
-          } catch (IOException ex) {
-            Logger.getLogger(PostBoxUtils.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (InterruptedException ex) {
-            Logger.getLogger(PostBoxUtils.class.getName()).log(Level.SEVERE, null, ex);
-          }
-          return result;
-        });
+      () -> {
+        UUID result = null;
+        try {
+          Profile p = PostBoxPlugin.getInstance().getProfileService().findByName(name);
+          result = p.getUniqueId();
+        } catch (IOException ex) {
+          Logger.getLogger(PostBoxUtils.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+          Logger.getLogger(PostBoxUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+      });
   }
 }

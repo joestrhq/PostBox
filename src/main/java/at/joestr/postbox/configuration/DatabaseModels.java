@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.configuration;
 
 import at.joestr.postbox.utils.Base64Objectifier;
@@ -37,8 +36,10 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
  * @author joestr
  */
 public class DatabaseModels {
+
   @DatabaseTable(tableName = "postbox")
   public static class PostBoxModel {
+
     @DatabaseField(generatedId = true)
     private long id;
 
@@ -54,10 +55,11 @@ public class DatabaseModels {
     @DatabaseField(canBeNull = false)
     private String base64ItemStack;
 
-    public Base64Objectifier<ItemStack> itemStackBase64 =
-        new Base64Objectifier<>(BukkitObjectOutputStream.class, BukkitObjectInputStream.class);
+    public Base64Objectifier<ItemStack> itemStackBase64
+      = new Base64Objectifier<>(BukkitObjectOutputStream.class, BukkitObjectInputStream.class);
 
-    public PostBoxModel() {}
+    public PostBoxModel() {
+    }
 
     public PostBoxModel(UUID receiver, UUID sender) {
       this.receiver = receiver;

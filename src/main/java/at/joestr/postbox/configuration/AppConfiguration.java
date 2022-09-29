@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.configuration;
 
 import at.joestr.postbox.PostBoxPlugin;
@@ -68,11 +67,11 @@ public class AppConfiguration {
 
       if (!containsRequiredEntries) {
         PostBoxPlugin.getInstance()
-            .getLogger()
-            .log(
-                Level.WARNING,
-                "The file {0} is missing some entries. Please check the documentation!",
-                new Object[] {this.external.getConfigFile().getPath()});
+          .getLogger()
+          .log(
+            Level.WARNING,
+            "The file {0} is missing some entries. Please check the documentation!",
+            new Object[]{this.external.getConfigFile().getPath()});
       }
     }
   }
@@ -87,7 +86,7 @@ public class AppConfiguration {
    * @throws IOException
    */
   public static AppConfiguration getInstance(
-      File externalConfigFile, InputStream bundledConfigStream) throws IOException {
+    File externalConfigFile, InputStream bundledConfigStream) throws IOException {
     if (instance != null) {
       throw new RuntimeException("This class has already been instantiated.");
     }
@@ -107,9 +106,9 @@ public class AppConfiguration {
 
   private void logMissingExternalPathEntry(String path) {
     LOG.log(
-        Level.WARNING,
-        "The path {0} was not found in {1}. Using default path.",
-        new Object[] {path, external.getConfigFile().getPath()});
+      Level.WARNING,
+      "The path {0} was not found in {1}. Using default path.",
+      new Object[]{path, external.getConfigFile().getPath()});
   }
 
   public Boolean getBool(String path) {

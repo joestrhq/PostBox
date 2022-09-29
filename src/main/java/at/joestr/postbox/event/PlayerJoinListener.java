@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.event;
 
 import at.joestr.postbox.configuration.CurrentEntries;
@@ -37,7 +36,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
-  public PlayerJoinListener() {}
+  public PlayerJoinListener() {
+  }
 
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
@@ -50,24 +50,24 @@ public class PlayerJoinListener implements Listener {
 
     long size = -1;
     try {
-      size =
-          DatabaseConfiguration.getInstance()
-              .getPostBoxDao()
-              .queryBuilder()
-              .where()
-              .eq("receiver", player.getUniqueId())
-              .countOf();
+      size
+        = DatabaseConfiguration.getInstance()
+          .getPostBoxDao()
+          .queryBuilder()
+          .where()
+          .eq("receiver", player.getUniqueId())
+          .countOf();
     } catch (SQLException ex) {
 
     }
 
     if (size > 0) {
       new MessageHelper()
-          .prefix(true)
-          .path(CurrentEntries.LANG_EVT_MESSAGE_ON_JOIN)
-          .locale(locale)
-          .receiver(player)
-          .send();
+        .prefix(true)
+        .path(CurrentEntries.LANG_EVT_MESSAGE_ON_JOIN)
+        .locale(locale)
+        .receiver(player)
+        .send();
     }
   }
 }

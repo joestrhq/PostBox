@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox;
 
 import at.joestr.postbox.commands.CommandPostBox;
@@ -61,6 +60,7 @@ import org.enginehub.squirrelid.resolver.HttpRepositoryService;
 import org.enginehub.squirrelid.resolver.ProfileService;
 
 public class PostBoxPlugin extends JavaPlugin implements Listener {
+
   private static final Logger LOG = Logger.getLogger(PostBoxPlugin.class.getName());
   public static PostBoxPlugin instance = null;
 
@@ -93,19 +93,19 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
     this.loadExternalPluginIntegrations();
     this.loadProfileService();
 
-    this.updater =
-        new Updater(
-            AppConfiguration.getInstance().getBool(CurrentEntries.CONF_UPDATER_ENABLED.toString()),
-            AppConfiguration.getInstance()
-                .getBool(CurrentEntries.CONF_UPDATER_DOWNLOADTOPLUGINUPDATEFOLDER.toString()),
-            this.getDescription().getVersion(),
-            AppConfiguration.getInstance()
-                .getString(CurrentEntries.CONF_UPDATER_TARGETURL.toString()),
-            AppConfiguration.getInstance()
-                .getString(CurrentEntries.CONF_UPDATER_POMPROPERTIESFILE.toString()),
-            AppConfiguration.getInstance()
-                .getString(CurrentEntries.CONF_UPDATER_CLASSIFIER.toString()),
-            Bukkit.getUpdateFolderFile());
+    this.updater
+      = new Updater(
+        AppConfiguration.getInstance().getBool(CurrentEntries.CONF_UPDATER_ENABLED.toString()),
+        AppConfiguration.getInstance()
+          .getBool(CurrentEntries.CONF_UPDATER_DOWNLOADTOPLUGINUPDATEFOLDER.toString()),
+        this.getDescription().getVersion(),
+        AppConfiguration.getInstance()
+          .getString(CurrentEntries.CONF_UPDATER_TARGETURL.toString()),
+        AppConfiguration.getInstance()
+          .getString(CurrentEntries.CONF_UPDATER_POMPROPERTIESFILE.toString()),
+        AppConfiguration.getInstance()
+          .getString(CurrentEntries.CONF_UPDATER_CLASSIFIER.toString()),
+        Bukkit.getUpdateFolderFile());
 
     this.commandMap.put("postbox", new CommandPostBox());
     this.commandMap.put("postbox-open", new CommandPostBoxOpen());
@@ -126,14 +126,14 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
 
   private void registerCommands() {
     this.commandMap.forEach(
-        (s, e) -> {
-          PluginCommand pluginCommand = getCommand(s);
-          if (pluginCommand == null) {
-            return;
-          }
-          pluginCommand.setExecutor(e);
-          pluginCommand.setTabCompleter(e);
-        });
+      (s, e) -> {
+        PluginCommand pluginCommand = getCommand(s);
+        if (pluginCommand == null) {
+          return;
+        }
+        pluginCommand.setExecutor(e);
+        pluginCommand.setTabCompleter(e);
+      });
   }
 
   private void registerListeners() {
@@ -162,10 +162,10 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
 
     try {
       LanguageConfiguration.getInstance(
-          externalLanguagesFolder, bundledLanguages, new Locale("en"));
+        externalLanguagesFolder, bundledLanguages, new Locale("en"));
     } catch (IOException ex) {
       this.getLogger()
-          .log(Level.SEVERE, "Error whilst intialising the language configuration!", ex);
+        .log(Level.SEVERE, "Error whilst intialising the language configuration!", ex);
       this.getServer().getPluginManager().disablePlugin(this);
     }
   }
@@ -173,7 +173,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   private void loadDatabase() throws SQLException {
     try {
       DatabaseConfiguration.getInstance(
-          AppConfiguration.getInstance().getString(CurrentEntries.CONF_JDBCURI.toString()));
+        AppConfiguration.getInstance().getString(CurrentEntries.CONF_JDBCURI.toString()));
     } catch (ClassNotFoundException ex) {
       Logger.getLogger(PostBoxPlugin.class.getName()).log(Level.SEVERE, null, ex);
     }
@@ -184,8 +184,8 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
       this.luckPermsApi = LuckPermsProvider.get();
     } catch (IllegalStateException ex) {
       LOG.log(
-          Level.WARNING,
-          "LuckPerms API not found. Using conventional methods for resolving player names!");
+        Level.WARNING,
+        "LuckPerms API not found. Using conventional methods for resolving player names!");
     }
   }
 

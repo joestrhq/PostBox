@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.event;
 
 import at.joestr.postbox.PostBoxPlugin;
@@ -39,7 +38,7 @@ public class InventoryCloseListener implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
   public void handle(InventoryCloseEvent event) {
     PostBoxPlugin.getInstance()
-        .getInventoryMappings()
-        .removeIf(mapping -> mapping.getLeft().equals(event.getPlayer().getUniqueId()));
+      .getInventoryMappings()
+      .removeIf(mapping -> mapping.getLeft().equals(event.getPlayer().getUniqueId()));
   }
 }

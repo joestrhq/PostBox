@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.configuration;
 
 import java.util.ArrayList;
@@ -78,14 +77,14 @@ public class MessageHelper {
   }
 
   public void send() {
-    String message =
-        LanguageConfiguration.getInstance().getString(this.path.toString(), this.locale);
+    String message
+      = LanguageConfiguration.getInstance().getString(this.path.toString(), this.locale);
 
     if (showPrefix) {
-      message =
-          message.replace(
-              "%prefix",
-              new MessageHelper().locale(this.locale).path(CurrentEntries.LANG_PREFIX).string());
+      message
+        = message.replace(
+          "%prefix",
+          new MessageHelper().locale(this.locale).path(CurrentEntries.LANG_PREFIX).string());
     } else {
       message = message.replace("%prefix", "");
     }

@@ -21,7 +21,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-
 package at.joestr.postbox.configuration;
 
 import at.joestr.postbox.configuration.DatabaseModels.PostBoxModel;
@@ -37,6 +36,7 @@ import java.util.logging.Logger;
  * @author joestr
  */
 public class DatabaseConfiguration {
+
   private static DatabaseConfiguration instance;
   private static final Logger LOG = Logger.getLogger(AppConfiguration.class.getSimpleName());
 
@@ -61,7 +61,7 @@ public class DatabaseConfiguration {
   }
 
   public static DatabaseConfiguration getInstance(String jdbcUri)
-      throws ClassNotFoundException, SQLException {
+    throws ClassNotFoundException, SQLException {
     if (instance != null) {
       throw new RuntimeException("This class has already been instantiated.");
     }
