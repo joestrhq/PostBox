@@ -60,11 +60,13 @@ public enum CurrentEntries {
   LANG_CMD_POSTBOX_OPEN_EMPTY("commands.postbox-open.empty"),
   LANG_CMD_POSTBOX_OPEN_PLAYERNAME_RESOLVING_ERROR(
     "commands.postbox-open.playername_resolving_error"),
+  LANG_CMD_POSTBOX_OPEN_ITEMLORE("commands.postbox-open.itemlore"),
   LANG_CMD_POSTBOX_OPENOTHER_CHEST_TITLE(
     "commands.postbox-openother.chest_title"),
   LANG_CMD_POSTBOX_OPENOTHER_EMPTY("commands.postbox-openother.empty"),
   LANG_CMD_POSTBOX_OPENOTHER_PLAYERNAME_RESOLVING_ERROR(
     "commands.postbox-openother.playername_resolving_error"),
+  LANG_CMD_POSTBOX_OPENOTHER_ITEMLORE("commands.postbox-openother.itemlore"),
   LANG_CMD_POSTBOX_UPDATE_OFF("commands.postbox-update.off"),
   LANG_CMD_POSTBOX_UPDATE_ASYNCSTART("commands.postbox-update.asyncstart"),
   LANG_CMD_POSTBOX_UPDATE_ERROR("commands.postbox-update.error"),

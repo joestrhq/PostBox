@@ -157,7 +157,13 @@ public class CommandPostBoxOpen implements TabExecutor {
                   ItemStack localItemStack = lPbo.getItemStack();
                   ItemMeta localItemMeta = localItemStack.getItemMeta();
                   if (localItemMeta != null) {
-                    localItemMeta.setLore(List.of(resolvedUuids.get(lPbo.getSender())));
+                    localItemMeta.setLore(List.of(
+                      new MessageHelper()
+                        .locale(locale)
+                        .path(CurrentEntries.LANG_CMD_POSTBOX_OPEN_ITEMLORE)
+                        .string()
+                        .replace("%playername", resolvedUuids.get(lPbo.getSender()))
+                    ));
                   }
                   localItemStack.setItemMeta(localItemMeta);
                   inventory.setItem(inventoryItemCount++, localItemStack);

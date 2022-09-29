@@ -19,10 +19,12 @@ commands:
     chest_title: "Your PostBox"
     empty: '[""%prefix,{"text":"Your PostBox is empty!","color":"red"}]'
     playername_resolving_error: '[""%prefix,{"text":"Error whilst resolving player names!","color":"red"}]'
+    itemlore: 'From: %playername'
   postbox-openother:
     chest_title: "PostBox of %playername"
     empty: '[""%prefix,{"text":"The PostBox of ","color":"red"},{"text":"%playername","color":"white"},{"text":" is empty!","color":"red"}]'
     playername_resolving_error: '[""%prefix,{"text":"Error whilst resolving player names!","color":"red"}]'
+    itemlore: 'From: %playername'
   postbox-update:
     false: '[""%prefix,{"text":"Updates are turned off!","color":"red"}]'
     asyncstart: '[""%prefix,{"text":"Checking for updates ...","color":"aqua"}]'
