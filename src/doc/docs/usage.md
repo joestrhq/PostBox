@@ -15,7 +15,7 @@ Sends the item you are holding in your hand to another player.
 Opens your PostBox.
 
 ### /postbox-openother <Player>
-![Player executes '/postbox-openother 9yb' and opens the PostBox of player "9YB".](./assets/postbox_command_postbox-openother_9yb)
+![Player executes '/postbox-openother 9yb' and opens the PostBox of player "9YB".](./assets/postbox_command_postbox-openother_9yb.gif)
 Open the PostBox of that specific player.
 
 ### /postbox-update
