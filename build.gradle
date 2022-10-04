@@ -11,7 +11,7 @@ plugins {
 
 mkdocs {
   publish {
-    docPath = '1.1.0'
+    docPath = '1.1.0+update1'
     rootRedirect = true
     rootRedirectTo = 'latest'
     versionAliases = ['latest']
