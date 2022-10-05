@@ -43,7 +43,7 @@ The default language configurations are located in folder `plugins/PostBox/langu
 The default language configuration file for English looks like this:  
   
 ```
-version: 2
+version: 3
 prefix: ',{"text":"[","color":"dark_gray"},{"text":"PostBox","color":"dark_green"},{"text":"]","color":"dark_gray"},{"text":" "}'
 generic:
   not_a_player: '[""%prefix,{"text":"This command can only be used by players!","color":"red"}]'
@@ -61,15 +61,15 @@ commands:
     success_receiver: '[""%prefix,{"text":"You received mail. Click here to open your PostBox!","color":"aqua","clickEvent":{"action":"run_command","value":"/postbox-open"},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-open","color":"white"}}}]'
     receipient_full: '[""%prefix,{"text":"The PostBox of ","color":"red"},{"text":"%playername","color":"white"},{"text":" is already full!","color":"red"}]'
   postbox-open:
-    chest_title: "Your PostBox"
+    chest_title: "&x&d&4&1&c&6&3Your PostBox"
     empty: '[""%prefix,{"text":"Your PostBox is empty!","color":"red"}]'
     playername_resolving_error: '[""%prefix,{"text":"Error whilst resolving player names!","color":"red"}]'
-    itemlore: 'From: %playername'
+    itemlore: '&x&d&4&1&c&6&3From: %playername'
   postbox-openother:
-    chest_title: "PostBox of %playername"
+    chest_title: "&x&d&4&1&c&6&3PostBox of %playername"
     empty: '[""%prefix,{"text":"The PostBox of ","color":"red"},{"text":"%playername","color":"white"},{"text":" is empty!","color":"red"}]'
     playername_resolving_error: '[""%prefix,{"text":"Error whilst resolving player names!","color":"red"}]'
-    itemlore: 'From: %playername'
+    itemlore: '&x&d&4&1&c&6&3From: %playername'
   postbox-update:
     false: '[""%prefix,{"text":"Updates are turned off!","color":"red"}]'
     asyncstart: '[""%prefix,{"text":"Checking for updates ...","color":"aqua"}]'
@@ -81,4 +81,3 @@ events:
   message_on_join: '[""%prefix,{"text":"You have received mail. Click here to open your PostBox!","color":"aqua","clickEvent":{"action":"run_command","value":"/postbox-open"},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-open","color":"white"}}}]'
   inventory_full: '[""%prefix,{"text":"Your inventory is full!","color":"red"}]'
 ```
-
