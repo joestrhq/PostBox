@@ -44,6 +44,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -171,12 +172,14 @@ public class CommandPostBoxOpenOther implements TabExecutor {
                           null,
                           AppConfiguration.getInstance()
                             .getInt(CurrentEntries.CONF_SIZE.toString()),
-                          new MessageHelper()
-                            .locale(locale)
-                            .path(
-                              CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_CHEST_TITLE)
-                            .string()
-                            .replace("%playername", args[0]));
+                          ChatColor.translateAlternateColorCodes(
+                            '&',
+                            new MessageHelper()
+                              .locale(locale)
+                              .path(
+                                CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_CHEST_TITLE)
+                              .string()
+                              .replace("%playername", args[0])));
                       PostBoxPlugin.getInstance()
                         .getInventoryMappings()
                         .add(Triple.of(player.getUniqueId(), inventory, targetUuid));
@@ -186,13 +189,24 @@ public class CommandPostBoxOpenOther implements TabExecutor {
                         ItemStack localItemStack = lPbo.getItemStack();
                         ItemMeta localItemMeta = localItemStack.getItemMeta();
                         if (localItemMeta != null) {
-                          localItemMeta.setLore(List.of(
-                            new MessageHelper()
-                              .locale(locale)
-                              .path(CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_ITEMLORE)
-                              .string()
-                              .replace("%playername", resolvedUuids.get(lPbo.getSender()))
-                          ));
+                          List<String> loreLines = localItemMeta.getLore();
+
+                          if (loreLines == null) {
+                            loreLines = new ArrayList<>();
+                          }
+
+                          loreLines.add(
+                            ChatColor.translateAlternateColorCodes(
+                              '&',
+                              new MessageHelper()
+                                .locale(locale)
+                                .path(CurrentEntries.LANG_CMD_POSTBOX_OPENOTHER_ITEMLORE)
+                                .string()
+                                .replace("%playername", resolvedUuids.get(lPbo.getSender()))
+                            )
+                          );
+
+                          localItemMeta.setLore(loreLines);
                         }
                         localItemStack.setItemMeta(localItemMeta);
                         inventory.setItem(inventoryItemCount++, localItemStack);

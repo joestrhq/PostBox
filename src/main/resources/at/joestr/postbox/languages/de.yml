@@ -1,4 +1,4 @@
-version: 2
+version: 3
 prefix: ',{"text":"[","color":"dark_gray"},{"text":"PostBox","color":"dark_green"},{"text":"]","color":"dark_gray"},{"text":" "}'
 generic:
   not_a_player: '[""%prefix,{"text":"This command can only be used by players!","color":"red"}]'
@@ -16,15 +16,15 @@ commands:
     success_receiver: '[""%prefix,{"text":"Du hast ein Item erhalten! Öffne jetzt deine PostBox!","color":"aqua","clickEvent":{"action":"run_command","value":"/postbox-open"},"hoverEvent":{"action":"show_text","value":{"text":"/postbox-open","color":"white"}}}]'
     receipient_full: '[""%prefix,{"text":"Die PostBox von ","color":"red"},{"text":"%playername","color":"white"},{"text":" ist schon voll!","color":"red"}]'
   postbox-open:
-    chest_title: "Your PostBox"
+    chest_title: "&x&d&4&1&c&6&3Your PostBox"
     empty: '[""%prefix,{"text":"Deine PostBox ist leer!","color":"red"}]'
     playername_resolving_error: '[""%prefix,{"text":"Fehler beim Auflösen der Spielernamen!","color":"red"}]'
-    itemlore: 'Von: %playername'
+    itemlore: '&x&d&4&1&c&6&3Von: %playername'
   postbox-openother:
-    chest_title: "PostBox von %playername"
+    chest_title: "&x&d&4&1&c&6&3PostBox von %playername"
     empty: '[""%prefix,{"text":"The PostBox of ","color":"red"},{"text":"%playername","color":"white"},{"text":" is empty!","color":"red"}]'
     playername_resolving_error: '[""%prefix,{"text":"Fehler beim Auflösen der Spielernamen!","color":"red"}]'
-    itemlore: 'Von: %playername'
+    itemlore: '&x&d&4&1&c&6&3Von: %playername'
   postbox-update:
     false: '[""%prefix,{"text":"Updates wurden deaktiviert!","color":"red"}]'
     asyncstart: '[""%prefix,{"text":"Prüfe auf Updates ...","color":"aqua"}]'
