@@ -39,6 +39,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -53,6 +54,10 @@ public class InventoryClickListener implements Listener {
     Player player = (Player) event.getWhoClicked();
     Locale locale = LocaleHelper.resolve(player.getLocale());
 
+    if (event.getCurrentItem() == null) {
+      return;
+    }
+
     if (!PostBoxPlugin.getInstance().getInventoryMappings().stream()
       .anyMatch(t -> t.getLeft().equals(player.getUniqueId()))) {
       return;
@@ -64,7 +69,8 @@ public class InventoryClickListener implements Listener {
       return;
     }
 
-    if (event.getCurrentItem() == null) {
+    if (event.isShiftClick() || event.isRightClick() || event.getClick() == ClickType.MIDDLE) {
+      event.setCancelled(true);
       return;
     }
 
@@ -79,8 +85,6 @@ public class InventoryClickListener implements Listener {
         .send();
       return;
     }
-
-    ItemStack itemStack = event.getCurrentItem();
 
     Bukkit.getScheduler()
       .runTaskAsynchronously(
