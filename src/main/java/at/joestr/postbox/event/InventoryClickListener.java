@@ -32,8 +32,11 @@ import at.joestr.postbox.configuration.MessageHelper;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import java.sql.SQLException;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,9 +44,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryClickListener implements Listener {
+
+  private static final Logger LOGGER = Logger.getLogger(InventoryClickListener.class.getName());
 
   public InventoryClickListener() {
   }
@@ -86,61 +92,71 @@ public class InventoryClickListener implements Listener {
       return;
     }
 
-    Bukkit.getScheduler()
-      .runTaskAsynchronously(
-        PostBoxPlugin.getInstance(),
-        () -> {
-          PostBoxModel postBoxModelEntry = null;
-          try {
-            postBoxModelEntry
-            = DatabaseConfiguration.getInstance()
-              .getPostBoxDao()
-              .queryBuilder()
-              .where()
-              .eq(
-                "receiver",
-                PostBoxPlugin.getInstance().getInventoryMappings().stream()
-                  .filter(t -> t.getLeft().equals(player.getUniqueId()))
-                  .findFirst()
-                  .get()
-                  .getRight())
-              .query()
-              .get(event.getRawSlot());
-          } catch (SQLException ex) {
-            return;
+    final int rawEventSlot = event.getRawSlot();
+    event.setCancelled(true);
+
+    Bukkit.getScheduler().runTaskAsynchronously(PostBoxPlugin.getInstance(), () -> {
+      PostBoxModel postBoxModelEntry = null;
+
+      try {
+        postBoxModelEntry
+          = DatabaseConfiguration.getInstance()
+            .getPostBoxDao()
+            .queryBuilder()
+            .where()
+            .eq(
+              "receiver",
+              PostBoxPlugin.getInstance().getInventoryMappings().stream()
+                .filter(t -> t.getLeft().equals(player.getUniqueId()))
+                .findFirst()
+                .get()
+                .getRight())
+            .query()
+            .get(rawEventSlot);
+      } catch (SQLException ex) {
+        LOGGER.log(Level.SEVERE, null, ex);
+        return;
+      }
+
+      try {
+        DeleteBuilder<PostBoxModel, String> deleteBuilder
+          = DatabaseConfiguration.getInstance().getPostBoxDao().deleteBuilder();
+        deleteBuilder.where().eq("id", postBoxModelEntry.getId());
+        deleteBuilder.delete();
+      } catch (SQLException ex) {
+        LOGGER.log(Level.SEVERE, null, ex);
+        return;
+      }
+
+      // Circumvent
+      final PostBoxModel targetEntry = postBoxModelEntry;
+
+      Bukkit.getScheduler().runTask(PostBoxPlugin.getInstance(), () -> {
+        player.setItemOnCursor(null);
+        player.getInventory().addItem(targetEntry.getItemStack());
+
+        Optional<Triple<UUID, Inventory, UUID>> tempForInventoryResolution
+          = PostBoxPlugin.getInstance().getInventoryMappings().stream()
+            .filter(t -> t.getLeft().equals(player.getUniqueId())).findFirst();
+
+        if (tempForInventoryResolution.isEmpty()) {
+          return;
+        }
+
+        Inventory postBoxInventory
+          = tempForInventoryResolution.get().getMiddle();
+
+        postBoxInventory.remove(postBoxInventory.getItem(rawEventSlot));
+        ItemStack[] contents = postBoxInventory.getContents();
+        postBoxInventory.clear();
+
+        for (ItemStack i : contents) {
+          if (i == null) {
+            continue;
           }
-
-          try {
-            DeleteBuilder<PostBoxModel, String> deleteBuilder
-            = DatabaseConfiguration.getInstance().getPostBoxDao().deleteBuilder();
-            deleteBuilder.where().eq("id", postBoxModelEntry.getId());
-            deleteBuilder.delete();
-          } catch (SQLException ex) {
-            Logger.getLogger(InventoryClickListener.class.getName())
-              .log(Level.SEVERE, null, ex);
-          }
-
-          // Circumvent
-          final PostBoxModel get = postBoxModelEntry;
-
-          Bukkit.getScheduler()
-            .runTask(
-              PostBoxPlugin.getInstance(),
-              () -> {
-                player.getInventory().addItem(get.getItemStack());
-
-                event.getWhoClicked().setItemOnCursor(null);
-
-                ItemStack[] contents = event.getClickedInventory().getContents();
-                event.getInventory().clear();
-
-                for (ItemStack i : contents) {
-                  if (i == null) {
-                    continue;
-                  }
-                  event.getInventory().addItem(i);
-                }
-              });
-        });
+          postBoxInventory.addItem(i);
+        }
+      });
+    });
   }
 }
