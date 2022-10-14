@@ -53,9 +53,6 @@ import org.bukkit.inventory.ItemStack;
  */
 public class CommandPostBoxSend implements TabExecutor {
 
-  public CommandPostBoxSend(PostBoxPlugin aThis) {
-  }
-
   @Override
   public List<String> onTabComplete(
     CommandSender cs, Command cmnd, String string, String[] strings) {
