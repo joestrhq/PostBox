@@ -166,6 +166,12 @@
       <version>3.12.0</version>
       <type>jar</type>
     </dependency>
+    <dependency>
+      <groupId>org.bstats</groupId>
+      <artifactId>bstats-bukkit</artifactId>
+      <version>3.0.0</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
     
   <build>
@@ -236,6 +242,7 @@
                   <include>com.j256.ormlite:ormlite-jdbc</include>
                   <include>com.vdurmont:semver4j</include>
                   <include>org.enginehub:squirrelid</include>
+                  <include>org.bstats:bstats-bukkit</include>
                 </includes>
               </artifactSet>
               <relocations>
@@ -250,6 +257,10 @@
                 <relocation>
                   <pattern>org.enginehub.squirrelid</pattern>
                   <shadedPattern>at.joestr.postbox.zzzthirdpartylib.org.enginehub.squirrelid</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.bstats</pattern>
+                  <shadedPattern>at.joestr.postbox.zzzthirdpartylib.org.bstats</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>

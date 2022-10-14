@@ -50,6 +50,7 @@ import java.util.logging.Logger;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.apache.commons.lang3.tuple.Triple;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
@@ -79,6 +80,8 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   @Override
   public void onEnable() {
     super.onEnable();
+
+    Metrics metrics = new Metrics(this, 16667);
 
     this.commandMap = new HashMap<>();
 
