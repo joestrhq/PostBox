@@ -110,8 +110,8 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
     this.commandMap.put("postbox", new CommandPostBox());
     this.commandMap.put("postbox-open", new CommandPostBoxOpen());
     this.commandMap.put("postbox-openother", new CommandPostBoxOpenOther());
-    this.commandMap.put("postbox-send", new CommandPostBoxSend(this));
-    this.commandMap.put("postbox-update", new CommandPostBoxUpdate(this));
+    this.commandMap.put("postbox-send", new CommandPostBoxSend());
+    this.commandMap.put("postbox-update", new CommandPostBoxUpdate());
 
     this.registerCommands();
     this.registerListeners();
