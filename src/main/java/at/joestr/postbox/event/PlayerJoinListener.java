@@ -29,12 +29,16 @@ import at.joestr.postbox.configuration.LocaleHelper;
 import at.joestr.postbox.configuration.MessageHelper;
 import java.sql.SQLException;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
+
+  private static final Logger LOGGER = Logger.getLogger(PlayerJoinListener.class.getName());
 
   public PlayerJoinListener() {
   }
@@ -49,6 +53,7 @@ public class PlayerJoinListener implements Listener {
     }
 
     long size = -1;
+
     try {
       size
         = DatabaseConfiguration.getInstance()
@@ -58,7 +63,7 @@ public class PlayerJoinListener implements Listener {
           .eq("receiver", player.getUniqueId())
           .countOf();
     } catch (SQLException ex) {
-
+      LOGGER.log(Level.SEVERE, null, ex);
     }
 
     if (size > 0) {
