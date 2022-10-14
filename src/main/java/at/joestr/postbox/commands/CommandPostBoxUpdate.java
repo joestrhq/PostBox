@@ -123,3 +123,4 @@ public class CommandPostBoxUpdate implements TabExecutor {
 
     return true;
   }
+}
