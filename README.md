@@ -12,7 +12,7 @@ PostBox is a Spigot plugin which give you the possibility to send items to other
 
 Head to over the [latest release](https://github.com/joestrhq/PostBox/releases/tag/v1.2.2).
 
-Download the `jar` file (currently `postbox-1.2.2-shaded.jar`).
+Download the `jar` file (currently `postbox-1.2.3-shaded.jar`).
 
 Drop the downloaded `jar` file into your Spigot `plugins` folder.
 
@@ -20,7 +20,7 @@ Stop your Spigot server and start it again.
 
 ### Authenticity
 
-If you want to check the authenticity of the downloaded file you can do that by running the command `jarsigner -verify -verbose:summary postbox-1.2.2-shaded.jar` in the same folder where `postbox-1.2.2-shaded.jar` is located.
+If you want to check the authenticity of the downloaded file you can do that by running the command `jarsigner -verify -verbose:summary postbox-1.2.3-shaded.jar` in the same folder where `postbox-1.2.3-shaded.jar` is located.
 
 The output of the command should look like this:
 ```

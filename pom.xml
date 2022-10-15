@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>    
   <groupId>at.joestr</groupId>
   <artifactId>postbox</artifactId>
-  <version>1.2.2</version>
+  <version>1.2.3</version>
   <packaging>jar</packaging>
     
   <name>PostBox</name>
@@ -242,7 +242,7 @@
                   <include>com.j256.ormlite:ormlite-jdbc</include>
                   <include>com.vdurmont:semver4j</include>
                   <include>org.enginehub:squirrelid</include>
-                  <include>org.bstats:bstats-bukkit</include>
+                  <include>org.bstats:*</include>
                 </includes>
               </artifactSet>
               <relocations>
