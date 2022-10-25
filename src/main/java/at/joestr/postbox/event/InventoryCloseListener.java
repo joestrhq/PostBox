@@ -24,6 +24,9 @@
 package at.joestr.postbox.event;
 
 import at.joestr.postbox.PostBoxPlugin;
+import java.util.UUID;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -34,11 +37,21 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
  */
 public class InventoryCloseListener implements Listener {
 
-  // Highest Priority and ignore cancelled events
-  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
   public void handle(InventoryCloseEvent event) {
-    PostBoxPlugin.getInstance()
+    final UUID playerUuid = event.getPlayer().getUniqueId();
+
+    boolean hasBeenRemoved = PostBoxPlugin.getInstance()
       .getInventoryMappings()
-      .removeIf(mapping -> mapping.getLeft().equals(event.getPlayer().getUniqueId()));
+      .removeIf(mapping -> mapping.getLeft().equals(playerUuid));
+
+    if (hasBeenRemoved) {
+      Bukkit.getScheduler().runTaskLater(PostBoxPlugin.getInstance(), () -> {
+        Player player = Bukkit.getPlayer(playerUuid);
+        if (player != null && player.isOnline()) {
+          player.updateInventory();
+        }
+      }, 1);
+    }
   }
 }

@@ -1,42 +1,35 @@
 main: '${project.groupId}.${project.artifactId}.PostBoxPlugin'
 name: '${project.name}'
 version: '${project.version}'
-api-version: '1.18'
+api-version: '1.19'
 description: 'Sending items to other players.'
 author: 'joestr'
-authors: ['2YB', '9YB'] 
 website: 'https://projects.joestr.at/postbox/'
 database: true
-#depend: [WorldEdit, WorldGuard]
 softdepend: [LuckPerms]
 commands:
   postbox:
     description: Shows the help for the PostBox plugin.
-    #aliases: [pbox]
     permission: postbox.commands.postbox
     permission-message: '§cYou are lacking permission §fpostbox.commands.postbox§c!'
     usage: '§cSyntax error! Use: §f/<command>'
   postbox-send:
     description: Send items to other players.
-    #aliases: [pboxs]
     permission: postbox.commands.postbox-send
     permission-message: '§cYou are lacking permission §fpostbox.commands.postbox-send§c!'
     usage: '§cSyntax error! Use: §f/<command>'
   postbox-open:
     description: Opens your PostBox.
-    #aliases: [pboxo]
     permission: postbox.commands.postbox-open
     permission-message: '§cYou are lacking permission §fpostbox.commands.postbox-open§c!'
     usage: '§cSyntax error! Use: §f/<command>'
   postbox-openother:
     description: Opens another player's PostBox.
-    #aliases: [pboxoo]
     permission: postbox.commands.postbox-openother
     permission-message: '§cYou are lacking permission §fpostbox.commands.postbox-openother§c!'
     usage: '§cSyntax error! Use: §f/<command>'
   postbox-update:
     description: Updates the plugin.
-    #aliases: [pboxu]
     permission: postbox.commands.postbox-update
     permission-message: '§cYou are lacking permission §fpostbox.commands.postbox-update§c!'
     usage: '§cSyntax error! Use: §f/<command>'

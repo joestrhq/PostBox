@@ -54,8 +54,7 @@ public class InventoryClickListener implements Listener {
   public InventoryClickListener() {
   }
 
-  // Highest Priority and ignore cancelled events
-  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+  @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
   public void Inventory(InventoryClickEvent event) {
     Player player = (Player) event.getWhoClicked();
     Locale locale = LocaleHelper.resolve(player.getLocale());
