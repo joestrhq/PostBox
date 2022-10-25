@@ -66,6 +66,11 @@ task writeVersionsJson() {
   {
     "version": "1.2.3",
     "title": "1.2.3",
+    "aliases": []
+  },
+  {
+    "version": "1.2.4",
+    "title": "1.2.4",
     "aliases": [
       "latest"
     ]
