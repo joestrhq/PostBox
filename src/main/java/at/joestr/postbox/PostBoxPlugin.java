@@ -52,6 +52,7 @@ import net.luckperms.api.LuckPermsProvider;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.event.Listener;
@@ -65,6 +66,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   private static final Logger LOG = Logger.getLogger(PostBoxPlugin.class.getName());
   public static PostBoxPlugin instance = null;
 
+  private NamespacedKey namespacedKey;
   private HashMap<String, TabExecutor> commandMap;
   private Updater updater;
   private LuckPerms luckPermsApi;
@@ -109,6 +111,8 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
         AppConfiguration.getInstance()
           .getString(CurrentEntries.CONF_UPDATER_CLASSIFIER.toString()),
         Bukkit.getUpdateFolderFile());
+
+    this.namespacedKey = new NamespacedKey(instance, "PostBox_c765a011bcd709a9c8d417be90a7f090");
 
     this.commandMap.put("postbox", new CommandPostBox());
     this.commandMap.put("postbox-open", new CommandPostBoxOpen());
@@ -218,5 +222,9 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
 
   public ArrayList<Triple<UUID, Inventory, UUID>> getInventoryMappings() {
     return inventoryMappings;
+  }
+
+  public NamespacedKey getNamespacedKey() {
+    return namespacedKey;
   }
 }
