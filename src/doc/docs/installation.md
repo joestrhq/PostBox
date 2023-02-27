@@ -4,7 +4,8 @@ Use following table to identify the version which is compatible for your Spigot 
 
 |Plugin version         |Server versions tested|Download                                                                                                     |
 |-----------------------|----------------------|-------------------------------------------------------------------------------------------------------------|
-|1.2.4 (**recommended**)|1.19.2                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.4/postbox-1.2.4-shaded.jar)|
+|1.2.5 (**recommended**)|1.19.3                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.5/postbox-1.2.5-shaded.jar)|
+|1.2.4                  |1.19.2                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.4/postbox-1.2.4-shaded.jar)|
 |1.2.3                  |1.19.2                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.3/postbox-1.2.3-shaded.jar)|
 |1.2.2                  |1.19.2                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.2/postbox-1.2.2-shaded.jar)|
 |1.2.1                  |1.19.2                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.1/postbox-1.2.1-shaded.jar)|
