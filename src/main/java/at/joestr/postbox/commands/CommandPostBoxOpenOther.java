@@ -30,6 +30,7 @@ import at.joestr.postbox.configuration.DatabaseConfiguration;
 import at.joestr.postbox.configuration.DatabaseModels.PostBoxModel;
 import at.joestr.postbox.configuration.LocaleHelper;
 import at.joestr.postbox.configuration.MessageHelper;
+import at.joestr.postbox.utils.PostBoxNamespacedKeyValues;
 import at.joestr.postbox.utils.PostBoxUtils;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 /**
  * @author joestr
@@ -207,6 +209,11 @@ public class CommandPostBoxOpenOther implements TabExecutor {
                           );
 
                           localItemMeta.setLore(loreLines);
+                          localItemMeta.getPersistentDataContainer().set(
+                            PostBoxPlugin.getInstance().getNamespacedKey(),
+                            PersistentDataType.INTEGER,
+                            PostBoxNamespacedKeyValues.IS_POST_BOX_ITEM.ordinal()
+                          );
                         }
                         localItemStack.setItemMeta(localItemMeta);
                         inventory.setItem(inventoryItemCount++, localItemStack);
