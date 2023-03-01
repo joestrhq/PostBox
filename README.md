@@ -6,11 +6,11 @@
 [![Matrix](https://img.shields.io/matrix/joestrhq.general:matrix.org?color=0dbd8b&logo=matrix)](https://matrix.to/#/#joestrhq.general:matrix.org)
 
 ## About
-PostBox is a Spigot plugin which give you the possibility to send items to other player.
+PostBox is a Spigot plugin, which gives you the possibility to send items to other players.
 
-## Installtion
+## Installation
 
-Head to over the [latest release](https://github.com/joestrhq/PostBox/releases/tag/v1.2.5).
+Head over to the [latest release](https://github.com/joestrhq/PostBox/releases/tag/v1.2.5).
 
 Download the `jar` file (currently `postbox-1.2.5-shaded.jar`).
 
@@ -20,7 +20,7 @@ Stop your Spigot server and start it again.
 
 ### Authenticity
 
-If you want to check the authenticity of the downloaded file you can do that by running the command `jarsigner -verify -verbose:summary postbox-1.2.5-shaded.jar` in the same folder where `postbox-1.2.5-shaded.jar` is located.
+If you want to check the authenticity of the downloaded file, you can do that by running the command `jarsigner -verify -verbose:summary postbox-1.2.5-shaded.jar` in the same folder where `postbox-1.2.5-shaded.jar` is located.
 
 The output of the command should look like this:
 ```
