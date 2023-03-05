@@ -58,7 +58,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.enginehub.squirrelid.resolver.HttpRepositoryService;
+import org.enginehub.squirrelid.resolver.BukkitPlayerService;
 import org.enginehub.squirrelid.resolver.ProfileService;
 
 public class PostBoxPlugin extends JavaPlugin implements Listener {
@@ -189,7 +189,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   private void loadExternalPluginIntegrations() {
     try {
       this.luckPermsApi = LuckPermsProvider.get();
-    } catch (IllegalStateException ex) {
+    } catch (IllegalStateException | NoClassDefFoundError ex) {
       LOG.log(
         Level.WARNING,
         "LuckPerms API not found. Using conventional methods for resolving player names!");
@@ -197,7 +197,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   }
 
   private void loadProfileService() {
-    this.profileService = HttpRepositoryService.forMinecraft();
+    this.profileService = BukkitPlayerService.getInstance();
   }
 
   public static PostBoxPlugin getInstance() {
