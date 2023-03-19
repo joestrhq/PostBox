@@ -150,9 +150,10 @@
     <dependency>
       <groupId>org.enginehub</groupId>
       <artifactId>squirrelid</artifactId>
-      <version>0.3.0</version>
-      <scope>compile</scope>
+      <version>0.3.2-SNAPSHOT</version>
+      <scope>system</scope>
       <type>jar</type>
+      <systemPath>${project.basedir}/libs/squirrelid-0.3.2-SNAPSHOT.jar</systemPath>
       <exclusions>
         <exclusion>
           <groupId>com.destroystokyo.paper</groupId>
