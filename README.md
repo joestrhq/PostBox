@@ -6,9 +6,9 @@
 [![Matrix](https://img.shields.io/matrix/joestrhq.general:matrix.org?color=0dbd8b&logo=matrix)](https://matrix.to/#/#joestrhq.general:matrix.org)
 
 ## About
-PostBox is a Spigot plugin which give you the possibility to send items to other player.
+PostBox is a Spigot plugin, which gives you the possibility to send items to other players.
 
-## Installtion
+## Installation
 
 Head to over the [latest release](https://github.com/joestrhq/PostBox/releases/tag/v1.2.6).
 
