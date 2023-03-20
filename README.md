@@ -47,7 +47,7 @@ The timestamp will expire on 2023-09-11.
 ```
 
 ## Build
-To build the project you need at least a Java Development Kit (JDK) in version 11 and Maven 3 installed.  
+To build the project you need at least a Java Development Kit (JDK) in version 17 and Maven 3 installed.  
 
 At first get a copy of the source code. Preferrably via `git clone https://github.com/joestrhq/PostBox.git`.  
 
