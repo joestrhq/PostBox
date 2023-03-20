@@ -58,7 +58,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.enginehub.squirrelid.resolver.BukkitPlayerService;
+import org.enginehub.squirrelid.resolver.HttpRepositoryService;
 import org.enginehub.squirrelid.resolver.ProfileService;
 
 public class PostBoxPlugin extends JavaPlugin implements Listener {
@@ -197,7 +197,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   }
 
   private void loadProfileService() {
-    this.profileService = BukkitPlayerService.getInstance();
+    this.profileService = HttpRepositoryService.forMinecraft();
   }
 
   public static PostBoxPlugin getInstance() {
