@@ -10,9 +10,9 @@ PostBox is a Spigot plugin, which gives you the possibility to send items to oth
 
 ## Installation
 
-Head over to the [latest release](https://github.com/joestrhq/PostBox/releases/tag/v1.2.5).
+Head over to the [latest release](https://github.com/joestrhq/PostBox/releases/tag/v1.2.6).
 
-Download the `jar` file (currently `postbox-1.2.5-shaded.jar`).
+Download the `jar` file (currently `postbox-1.2.6-shaded.jar`).
 
 Drop the downloaded `jar` file into your Spigot `plugins` folder.
 
@@ -20,7 +20,7 @@ Stop your Spigot server and start it again.
 
 ### Authenticity
 
-If you want to check the authenticity of the downloaded file, you can do that by running the command `jarsigner -verify -verbose:summary postbox-1.2.5-shaded.jar` in the same folder where `postbox-1.2.5-shaded.jar` is located.
+If you want to check the authenticity of the downloaded file you can do that by running the command `jarsigner -verify -verbose:summary postbox-1.2.6-shaded.jar` in the same folder where `postbox-1.2.6-shaded.jar` is located.
 
 The output of the command should look like this:
 ```
@@ -47,7 +47,7 @@ The timestamp will expire on 2023-09-11.
 ```
 
 ## Build
-To build the project you need at least a Java Development Kit (JDK) in version 11 and Maven 3 installed.  
+To build the project you need at least a Java Development Kit (JDK) in version 17 and Maven 3 installed.  
 
 At first get a copy of the source code. Preferrably via `git clone https://github.com/joestrhq/PostBox.git`.  
 

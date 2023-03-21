@@ -189,7 +189,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   private void loadExternalPluginIntegrations() {
     try {
       this.luckPermsApi = LuckPermsProvider.get();
-    } catch (IllegalStateException ex) {
+    } catch (IllegalStateException | NoClassDefFoundError ex) {
       LOG.log(
         Level.WARNING,
         "LuckPerms API not found. Using conventional methods for resolving player names!");
