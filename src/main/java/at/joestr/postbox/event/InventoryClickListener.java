@@ -38,6 +38,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.tuple.Triple;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -145,7 +146,7 @@ public class InventoryClickListener implements Listener {
         Inventory postBoxInventory
           = tempForInventoryResolution.get().getMiddle();
 
-        postBoxInventory.remove(postBoxInventory.getItem(rawEventSlot));
+        postBoxInventory.setItem(rawEventSlot, new ItemStack(Material.AIR));
         ItemStack[] contents = postBoxInventory.getContents();
         postBoxInventory.clear();
 
