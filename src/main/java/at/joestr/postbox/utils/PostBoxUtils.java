@@ -45,8 +45,12 @@ public class PostBoxUtils {
       () -> {
         String result = null;
         try {
-          Profile p = PostBoxPlugin.getInstance().getProfileService().findByUuid(uuid);
-          result = p.getName();
+          Profile cachedProfile = PostBoxPlugin.getInstance().getProfileCache().getIfPresent(uuid);
+          if (cachedProfile == null) {
+            Profile p = PostBoxPlugin.getInstance().getProfileResolver().findByUuid(uuid);
+            cachedProfile = PostBoxPlugin.getInstance().getProfileCache().getIfPresent(uuid);
+          }
+          result = cachedProfile.getName();
         } catch (IOException ex) {
           Logger.getLogger(PostBoxUtils.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -65,8 +69,9 @@ public class PostBoxUtils {
       () -> {
         UUID result = null;
         try {
-          Profile p = PostBoxPlugin.getInstance().getProfileService().findByName(name);
-          result = p.getUniqueId();
+          Profile p = PostBoxPlugin.getInstance().getProfileResolver().findByName(name);
+          Profile cachedProfile = PostBoxPlugin.getInstance().getProfileCache().getIfPresent(p.getUniqueId());
+          result = cachedProfile.getUniqueId();
         } catch (IOException ex) {
           Logger.getLogger(PostBoxUtils.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {

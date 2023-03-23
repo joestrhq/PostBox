@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>    
   <groupId>at.joestr</groupId>
   <artifactId>postbox</artifactId>
-  <version>1.2.6</version>
+  <version>1.2.7</version>
   <packaging>jar</packaging>
     
   <name>PostBox</name>
@@ -150,13 +150,11 @@
     <dependency>
       <groupId>org.enginehub</groupId>
       <artifactId>squirrelid</artifactId>
-      <version>0.3.2-SNAPSHOT</version>
-      <scope>system</scope>
-      <type>jar</type>
-      <systemPath>${project.basedir}/libs/squirrelid-0.3.2-SNAPSHOT.jar</systemPath>
+      <version>0.3.2</version>
+      <scope>compile</scope>
       <exclusions>
         <exclusion>
-          <groupId>com.destroystokyo.paper</groupId>
+          <groupId>io.papermc.paper</groupId>
           <artifactId>paper-api</artifactId>
         </exclusion>
       </exclusions>

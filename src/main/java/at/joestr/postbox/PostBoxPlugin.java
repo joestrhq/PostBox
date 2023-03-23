@@ -58,6 +58,9 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.enginehub.squirrelid.cache.HashMapCache;
+import org.enginehub.squirrelid.cache.ProfileCache;
+import org.enginehub.squirrelid.resolver.CacheForwardingService;
 import org.enginehub.squirrelid.resolver.HttpRepositoryService;
 import org.enginehub.squirrelid.resolver.ProfileService;
 
@@ -70,7 +73,8 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   private HashMap<String, TabExecutor> commandMap;
   private Updater updater;
   private LuckPerms luckPermsApi;
-  private ProfileService profileService;
+  private ProfileService profileResolver;
+  private ProfileCache profileCache = new HashMapCache();
   private ArrayList<Triple<UUID, Inventory, UUID>> inventoryMappings = new ArrayList<>();
 
   @Override
@@ -197,7 +201,7 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
   }
 
   private void loadProfileService() {
-    this.profileService = HttpRepositoryService.forMinecraft();
+    this.profileResolver = new CacheForwardingService(HttpRepositoryService.forMinecraft(), this.profileCache);
   }
 
   public static PostBoxPlugin getInstance() {
@@ -216,8 +220,12 @@ public class PostBoxPlugin extends JavaPlugin implements Listener {
     return luckPermsApi;
   }
 
-  public ProfileService getProfileService() {
-    return profileService;
+  public ProfileService getProfileResolver() {
+    return profileResolver;
+  }
+
+  public ProfileCache getProfileCache() {
+    return profileCache;
   }
 
   public ArrayList<Triple<UUID, Inventory, UUID>> getInventoryMappings() {
