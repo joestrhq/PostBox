@@ -7,6 +7,7 @@ author: 'joestr'
 website: 'https://projects.joestr.at/postbox/'
 database: true
 softdepend: [LuckPerms]
+folia-supported: true
 commands:
   postbox:
     description: Shows the help for the PostBox plugin.

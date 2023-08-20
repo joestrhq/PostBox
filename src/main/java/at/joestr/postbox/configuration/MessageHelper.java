@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
-import net.md_5.bungee.chat.ComponentSerializer;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -77,14 +77,14 @@ public class MessageHelper {
   }
 
   public void send() {
-    String message
-      = LanguageConfiguration.getInstance().getString(this.path.toString(), this.locale);
+    String message =
+        LanguageConfiguration.getInstance().getString(this.path.toString(), this.locale);
 
     if (showPrefix) {
-      message
-        = message.replace(
-          "%prefix",
-          new MessageHelper().locale(this.locale).path(CurrentEntries.LANG_PREFIX).string());
+      message =
+          message.replace(
+              "%prefix",
+              new MessageHelper().locale(this.locale).path(CurrentEntries.LANG_PREFIX).string());
     } else {
       message = message.replace("%prefix", "");
     }
@@ -97,7 +97,7 @@ public class MessageHelper {
       modifier.apply(message);
     }
 
-    receiver.spigot().sendMessage(ComponentSerializer.parse(message));
+    receiver.sendMessage(JSONComponentSerializer.builder().build().deserialize(message));
   }
 
   public String string() {
