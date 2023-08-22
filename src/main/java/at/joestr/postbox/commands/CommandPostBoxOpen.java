@@ -32,6 +32,7 @@ import at.joestr.postbox.configuration.LocaleHelper;
 import at.joestr.postbox.configuration.MessageHelper;
 import at.joestr.postbox.utils.PostBoxNamespacedKeyValues;
 import at.joestr.postbox.utils.PostBoxUtils;
+import io.papermc.paper.threadedregions.scheduler.AsyncScheduler;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,11 +59,12 @@ import org.bukkit.persistence.PersistentDataType;
  */
 public class CommandPostBoxOpen implements TabExecutor {
 
-  public CommandPostBoxOpen() {}
+  public CommandPostBoxOpen() {
+  }
 
   @Override
   public List<String> onTabComplete(
-      CommandSender cs, Command cmnd, String string, String[] strings) {
+    CommandSender cs, Command cmnd, String string, String[] strings) {
     return List.of();
   }
 
@@ -72,18 +74,18 @@ public class CommandPostBoxOpen implements TabExecutor {
       return false;
     }
 
-    final Locale locale =
-        sender instanceof Player
-            ? LocaleHelper.resolve(((Player) sender).getLocale())
-            : Locale.ENGLISH;
+    final Locale locale
+      = sender instanceof Player
+        ? LocaleHelper.resolve(((Player) sender).getLocale())
+        : Locale.ENGLISH;
 
     if (!(sender instanceof Player)) {
       new MessageHelper()
-          .prefix(true)
-          .path(CurrentEntries.LANG_GEN_NOT_A_PLAYER)
-          .locale(locale)
-          .receiver(sender)
-          .send();
+        .prefix(true)
+        .path(CurrentEntries.LANG_GEN_NOT_A_PLAYER)
+        .locale(locale)
+        .receiver(sender)
+        .send();
       return true;
     }
 
@@ -91,114 +93,111 @@ public class CommandPostBoxOpen implements TabExecutor {
 
     try {
       Class.forName(
-          "io.papermc.paper.threadedregions.RegionizedServerInitEvent",
-          false,
-          this.getClass().getClassLoader());
+        "io.papermc.paper.threadedregions.RegionizedServerInitEvent",
+        false,
+        this.getClass().getClassLoader());
       isRunningOnFolia = true;
     } catch (ClassNotFoundException ex) {
       Logger.getLogger(CommandPostBoxOpen.class.getName()).log(Level.SEVERE, null, ex);
     }
 
-    Bukkit.getAsyncScheduler()
-        .runNow(
-            PostBoxPlugin.getInstance(),
-            (t) -> {
-              Player player = (Player) sender;
+    Bukkit.getAsyncScheduler().runNow(
+      PostBoxPlugin.getInstance(),
+      (t) -> {
+        Player player = (Player) sender;
 
-              List<PostBoxModel> playerPostBox = new ArrayList();
-              try {
-                playerPostBox.addAll(
-                    DatabaseConfiguration.getInstance()
-                        .getPostBoxDao()
-                        .queryBuilder()
-                        .where()
-                        .eq("receiver", player.getUniqueId())
-                        .query());
-              } catch (SQLException ex) {
-                Logger.getLogger(CommandPostBoxOpen.class.getName()).log(Level.SEVERE, null, ex);
-              }
+        List<PostBoxModel> playerPostBox = new ArrayList();
+        try {
+          playerPostBox.addAll(
+            DatabaseConfiguration.getInstance()
+              .getPostBoxDao()
+              .queryBuilder()
+              .where()
+              .eq("receiver", player.getUniqueId())
+              .query());
+        } catch (SQLException ex) {
+          Logger.getLogger(CommandPostBoxOpen.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-              // Messages can be async
-              if (playerPostBox.isEmpty()) {
+        // Messages can be async
+        if (playerPostBox.isEmpty()) {
+          new MessageHelper()
+            .prefix(true)
+            .path(CurrentEntries.LANG_CMD_POSTBOX_OPEN_EMPTY)
+            .locale(locale)
+            .receiver(sender)
+            .send();
+          return;
+        }
+
+        HashMap<UUID, String> resolvedUuids = new HashMap<>();
+
+        for (PostBoxModel lPbo : playerPostBox) {
+          try {
+            resolvedUuids.putIfAbsent(
+              lPbo.getSender(), PostBoxUtils.resolveUniqueId(lPbo.getSender()).get());
+          } catch (InterruptedException | ExecutionException ex) {
+            Logger.getLogger(CommandPostBoxOpen.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        }
+
+        player.getScheduler().run(
+          PostBoxPlugin.getInstance(),
+          (t2) -> {
+            Inventory inventory = Bukkit.getServer().createInventory(
+              null,
+              AppConfiguration.getInstance().getInt(CurrentEntries.CONF_SIZE.toString()),
+              ChatColor.translateAlternateColorCodes(
+                '&',
                 new MessageHelper()
-                    .prefix(true)
-                    .path(CurrentEntries.LANG_CMD_POSTBOX_OPEN_EMPTY)
-                    .locale(locale)
-                    .receiver(sender)
-                    .send();
-                return;
-              }
+                  .locale(locale)
+                  .path(CurrentEntries.LANG_CMD_POSTBOX_OPEN_CHEST_TITLE)
+                  .string()
+              )
+            );
 
-              HashMap<UUID, String> resolvedUuids = new HashMap<>();
+            PostBoxPlugin.getInstance()
+              .getInventoryMappings()
+              .add(Triple.of(player.getUniqueId(), inventory, player.getUniqueId()));
 
-              for (PostBoxModel lPbo : playerPostBox) {
-                try {
-                  resolvedUuids.putIfAbsent(
-                      lPbo.getSender(), PostBoxUtils.resolveUniqueId(lPbo.getSender()).get());
-                } catch (InterruptedException | ExecutionException ex) {
-                  Logger.getLogger(CommandPostBoxOpen.class.getName()).log(Level.SEVERE, null, ex);
+            int inventoryItemCount = 0;
+            for (PostBoxModel lPbo : playerPostBox) {
+              ItemStack localItemStack = lPbo.getItemStack();
+              ItemMeta localItemMeta = localItemStack.getItemMeta();
+
+              if (localItemMeta != null) {
+                List<String> loreLines = localItemMeta.getLore();
+
+                if (loreLines == null) {
+                  loreLines = new ArrayList<>();
                 }
+
+                loreLines.add(
+                  ChatColor.translateAlternateColorCodes(
+                    '&',
+                    new MessageHelper()
+                      .locale(locale)
+                      .path(CurrentEntries.LANG_CMD_POSTBOX_OPEN_ITEMLORE)
+                      .string()
+                      .replace(
+                        "%playername", resolvedUuids.get(lPbo.getSender()))));
+
+                localItemMeta.setLore(loreLines);
+                localItemMeta
+                  .getPersistentDataContainer()
+                  .set(
+                    PostBoxPlugin.getInstance().getNamespacedKey(),
+                    PersistentDataType.INTEGER,
+                    PostBoxNamespacedKeyValues.IS_POST_BOX_ITEM.ordinal());
               }
 
-              Bukkit.getAsyncScheduler()
-                  .runNow(
-                      PostBoxPlugin.getInstance(),
-                      (t2) -> {
-                        // TODO: this does not work -> has to be created synchronously
-                        Inventory inventory =
-                            Bukkit.getServer()
-                                .createInventory(
-                                    null,
-                                    AppConfiguration.getInstance()
-                                        .getInt(CurrentEntries.CONF_SIZE.toString()),
-                                    ChatColor.translateAlternateColorCodes(
-                                        '&',
-                                        new MessageHelper()
-                                            .locale(locale)
-                                            .path(CurrentEntries.LANG_CMD_POSTBOX_OPEN_CHEST_TITLE)
-                                            .string()));
-                        PostBoxPlugin.getInstance()
-                            .getInventoryMappings()
-                            .add(Triple.of(player.getUniqueId(), inventory, player.getUniqueId()));
+              localItemStack.setItemMeta(localItemMeta);
+              inventory.setItem(inventoryItemCount++, localItemStack);
+            }
 
-                        int inventoryItemCount = 0;
-                        for (PostBoxModel lPbo : playerPostBox) {
-                          ItemStack localItemStack = lPbo.getItemStack();
-                          ItemMeta localItemMeta = localItemStack.getItemMeta();
-
-                          if (localItemMeta != null) {
-                            List<String> loreLines = localItemMeta.getLore();
-
-                            if (loreLines == null) {
-                              loreLines = new ArrayList<>();
-                            }
-
-                            loreLines.add(
-                                ChatColor.translateAlternateColorCodes(
-                                    '&',
-                                    new MessageHelper()
-                                        .locale(locale)
-                                        .path(CurrentEntries.LANG_CMD_POSTBOX_OPEN_ITEMLORE)
-                                        .string()
-                                        .replace(
-                                            "%playername", resolvedUuids.get(lPbo.getSender()))));
-
-                            localItemMeta.setLore(loreLines);
-                            localItemMeta
-                                .getPersistentDataContainer()
-                                .set(
-                                    PostBoxPlugin.getInstance().getNamespacedKey(),
-                                    PersistentDataType.INTEGER,
-                                    PostBoxNamespacedKeyValues.IS_POST_BOX_ITEM.ordinal());
-                          }
-
-                          localItemStack.setItemMeta(localItemMeta);
-                          inventory.setItem(inventoryItemCount++, localItemStack);
-                        }
-
-                        player.openInventory(inventory);
-                      });
-            });
+            player.openInventory(inventory);
+          }, null);
+      });
 
     return true;
   }
