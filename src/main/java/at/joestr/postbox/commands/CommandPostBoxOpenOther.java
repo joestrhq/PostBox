@@ -23,6 +23,7 @@
 //
 package at.joestr.postbox.commands;
 
+import at.joestr.javacommon.foliautils.FoliaUtils;
 import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.AppConfiguration;
 import at.joestr.postbox.configuration.CurrentEntries;
@@ -103,9 +104,9 @@ public class CommandPostBoxOpenOther implements TabExecutor {
       return true;
     }
 
-    Bukkit.getAsyncScheduler().runNow(
+    FoliaUtils.scheduleAsync(
       PostBoxPlugin.getInstance(),
-      (t) -> {
+      () -> {
         Player player = (Player) sender;
 
         PostBoxUtils.resolveName(args[0])
@@ -166,9 +167,10 @@ public class CommandPostBoxOpenOther implements TabExecutor {
                 }
               }
 
-              player.getScheduler().run(
+              FoliaUtils.scheduleSyncForEntity(
                 PostBoxPlugin.getInstance(),
-                (t2) -> {
+                player,
+                () -> {
                   Inventory inventory = Bukkit.getServer().createInventory(
                     null,
                     AppConfiguration.getInstance()
@@ -224,7 +226,7 @@ public class CommandPostBoxOpenOther implements TabExecutor {
                   }
 
                   player.openInventory(inventory);
-                }, null);
+                });
             });
       });
 

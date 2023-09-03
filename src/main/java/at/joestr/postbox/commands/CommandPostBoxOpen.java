@@ -23,6 +23,7 @@
 //
 package at.joestr.postbox.commands;
 
+import at.joestr.javacommon.foliautils.FoliaUtils;
 import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.AppConfiguration;
 import at.joestr.postbox.configuration.CurrentEntries;
@@ -89,21 +90,9 @@ public class CommandPostBoxOpen implements TabExecutor {
       return true;
     }
 
-    boolean isRunningOnFolia = false;
-
-    try {
-      Class.forName(
-        "io.papermc.paper.threadedregions.RegionizedServerInitEvent",
-        false,
-        this.getClass().getClassLoader());
-      isRunningOnFolia = true;
-    } catch (ClassNotFoundException ex) {
-      Logger.getLogger(CommandPostBoxOpen.class.getName()).log(Level.SEVERE, null, ex);
-    }
-
-    Bukkit.getAsyncScheduler().runNow(
+    FoliaUtils.scheduleAsync(
       PostBoxPlugin.getInstance(),
-      (t) -> {
+      () -> {
         Player player = (Player) sender;
 
         List<PostBoxModel> playerPostBox = new ArrayList();
@@ -141,9 +130,10 @@ public class CommandPostBoxOpen implements TabExecutor {
           }
         }
 
-        player.getScheduler().run(
+        FoliaUtils.scheduleSyncForEntity(
           PostBoxPlugin.getInstance(),
-          (t2) -> {
+          player,
+          () -> {
             Inventory inventory = Bukkit.getServer().createInventory(
               null,
               AppConfiguration.getInstance().getInt(CurrentEntries.CONF_SIZE.toString()),
@@ -196,7 +186,7 @@ public class CommandPostBoxOpen implements TabExecutor {
             }
 
             player.openInventory(inventory);
-          }, null);
+          });
       });
 
     return true;

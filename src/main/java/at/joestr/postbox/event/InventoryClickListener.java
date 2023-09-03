@@ -23,6 +23,7 @@
 //
 package at.joestr.postbox.event;
 
+import at.joestr.javacommon.foliautils.FoliaUtils;
 import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.CurrentEntries;
 import at.joestr.postbox.configuration.DatabaseConfiguration;
@@ -95,9 +96,9 @@ public class InventoryClickListener implements Listener {
     final int rawEventSlot = event.getRawSlot();
     event.setCancelled(true);
 
-    Bukkit.getAsyncScheduler().runNow(
+    FoliaUtils.scheduleAsync(
       PostBoxPlugin.getInstance(),
-      (t) -> {
+      () -> {
         PostBoxModel postBoxModelEntry = null;
 
         try {
@@ -133,9 +134,10 @@ public class InventoryClickListener implements Listener {
         // Circumvent
         final PostBoxModel targetEntry = postBoxModelEntry;
 
-        player.getScheduler().run(
+        FoliaUtils.scheduleSyncForEntity(
           PostBoxPlugin.getInstance(),
-          (t2) -> {
+          player,
+          () -> {
             player.setItemOnCursor(null);
             player.getInventory().addItem(targetEntry.getItemStack());
 
@@ -160,7 +162,7 @@ public class InventoryClickListener implements Listener {
               }
               postBoxInventory.addItem(i);
             }
-          }, null);
+          });
       });
   }
 }

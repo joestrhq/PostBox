@@ -23,6 +23,7 @@
 //
 package at.joestr.postbox.commands;
 
+import at.joestr.javacommon.foliautils.FoliaUtils;
 import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.AppConfiguration;
 import at.joestr.postbox.configuration.CurrentEntries;
@@ -130,9 +131,9 @@ public class CommandPostBoxSend implements TabExecutor {
 
     player.getInventory().clear(player.getInventory().first(itemstack));
 
-    Bukkit.getAsyncScheduler().runNow(
+    FoliaUtils.scheduleAsync(
       PostBoxPlugin.getInstance(),
-      (t) -> {
+      () -> {
         PostBoxUtils.resolveName(strings[0])
           .whenComplete(
             (targetUuid, exception) -> {
@@ -151,13 +152,13 @@ public class CommandPostBoxSend implements TabExecutor {
                   .eq("receiver", targetUuid)
                   .query();
               } catch (SQLException ex) {
-                Bukkit.getScheduler()
-                  .callSyncMethod(
-                    PostBoxPlugin.getInstance(),
-                    () -> {
-                      player.getInventory().addItem(itemstack);
-                      return true;
-                    });
+                FoliaUtils.scheduleSyncForEntity(
+                  PostBoxPlugin.getInstance(),
+                  player,
+                  () -> {
+                    player.getInventory().addItem(itemstack);
+                  }
+                );
                 // TODO: send message if exception
                 player.sendMessage("Exception");
                 return;
@@ -172,13 +173,13 @@ public class CommandPostBoxSend implements TabExecutor {
                   .receiver(cs)
                   .send();
 
-                Bukkit.getScheduler()
-                  .callSyncMethod(
-                    PostBoxPlugin.getInstance(),
-                    () -> {
-                      player.getInventory().addItem(itemstack);
-                      return true;
-                    });
+                FoliaUtils.scheduleSyncForEntity(
+                  PostBoxPlugin.getInstance(),
+                  player,
+                  () -> {
+                    player.getInventory().addItem(itemstack);
+                  }
+                );
                 return;
               }
 
@@ -193,13 +194,13 @@ public class CommandPostBoxSend implements TabExecutor {
                   .getPostBoxDao()
                   .create(newPostBoxEntry);
               } catch (SQLException ex) {
-                Bukkit.getScheduler()
-                  .callSyncMethod(
-                    PostBoxPlugin.getInstance(),
-                    () -> {
-                      player.getInventory().addItem(itemstack);
-                      return true;
-                    });
+                FoliaUtils.scheduleSyncForEntity(
+                  PostBoxPlugin.getInstance(),
+                  player,
+                  () -> {
+                    player.getInventory().addItem(itemstack);
+                  }
+                );
                 Logger.getLogger(CommandPostBoxSend.class.getName())
                   .log(Level.SEVERE, null, ex);
               }
