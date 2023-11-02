@@ -286,7 +286,7 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
+      <!--<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jarsigner-plugin</artifactId>
         <version>3.0.0</version>
@@ -310,8 +310,8 @@
             <include>*.jar</include>
           </includes>
         </configuration>
-      </plugin>
-      <!--<plugin>
+      </plugin>-->
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
         <version>1.6</version>
@@ -324,7 +324,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>-->
+      </plugin>
     </plugins>
   </build>
   
