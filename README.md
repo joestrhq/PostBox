@@ -51,6 +51,6 @@ To build the project you need at least a Java Development Kit (JDK) in version 1
 
 At first get a copy of the source code. Preferrably via `git clone https://github.com/joestrhq/PostBox.git`.  
 
-Initiate a build with `mvn -Djarsigner.skip=true clean package`.  
+Initiate a build with `mvn -Dgpg.skip=true clean package`.  
 
 The compiled plugin (`postbox-X.X.X-shaded.jar`) will be available in the `target` folder.
