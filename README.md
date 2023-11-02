@@ -19,31 +19,25 @@ Drop the downloaded `jar` file into your Spigot `plugins` folder.
 Stop your Spigot server and start it again.
 
 ### Authenticity
+If you want to check the authenticity of the downloaded file you can do that by verifying the GPG signature.
 
-If you want to check the authenticity of the downloaded file you can do that by running the command `jarsigner -verify -verbose:summary postbox-1.2.8-shaded.jar` in the same folder where `postbox-1.2.8-shaded.jar` is located.
-
-The output of the command should look like this:
+**Ubuntu**
 ```
-s      52687 Sun Feb 27 21:44:36 CET 2022 META-INF/MANIFEST.MF
-       52849 Sun Feb 27 21:44:36 CET 2022 META-INF/1.SF (and 1 more)
-           0 Sun Feb 27 20:44:46 CET 2022 META-INF/ (and 44 more)
-sm     10037 Sun Feb 27 20:44:46 CET 2022 META-INF/maven/at.joestr/postbox/pom.xml (and 339 more)
-
-  s = signature was verified 
-  m = entry is listed in manifest
-  k = at least one certificate was found in keystore
-
-- Signed by "CN=Joel Strasser, O=Joel Strasser, L=Radenthein, ST=Carinthia, C=AT"
-    Digest algorithm: SHA-256
-    Signature algorithm: SHA384withRSA, 4096-bit key
-  Timestamped by "CN=SSL.com Timestamping Unit 2021, O=SSL Corp, L=Houston, ST=Texas, C=US" on Sun Feb 27 20:44:36 UTC 2022
-    Timestamp digest algorithm: SHA-256
-    Timestamp signature algorithm: SHA256withSHA256withRSA, 3072-bit key
-
-jar verified.
-
-The signer certificate will expire on 2022-09-30.
-The timestamp will expire on 2023-09-11.
+$ curl -sSL "https://www.joestr.at/assets/software_joestr.at_0x3866986c_public.asc" | gpg --import - # Import the key used to sign the software
+gpg: directory '/root/.gnupg' created
+gpg: keybox '/root/.gnupg/pubring.kbx' created
+gpg: /root/.gnupg/trustdb.gpg: trustdb created
+gpg: key 949F21403866986C: public key "joestr.at (Software signing) <email@joestr.at>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+$ curl -sSL "https://github.com/joestrhq/PostBox/releases/download/v1.2.8/postbox-1.2.8-shaded.jar.asc" # Download the signature file
+$ gpg --verify postbox-1.2.8-shaded.jar.asc postbox-1.2.8-shaded.jar # Verfiy signature
+gpg: Signature made Thu 02 Nov 2023 11:28:33 PM CET
+gpg:                using RSA key 0B3BC83B18C12C83948D5CF5949F21403866986C
+gpg: Good signature from "joestr.at (Software signing) <email@joestr.at>" [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 0B3B C83B 18C1 2C83 948D  5CF5 949F 2140 3866 986C
 ```
 
 ## Build
