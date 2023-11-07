@@ -1,12 +1,12 @@
 # PostBox
-![Build Status](https://shields.io/endpoint?url=https://files.joestr.at/ci-build-status/cctray.php?project_name=PIP.github.joestrhq.PostBox_master)
+[![Build Status](https://shields.io/endpoint?url=https://files.joestr.at/ci-build-status/cctray.php?project_name=PIP.github.joestrhq.PostBox_master)](https://ci.joestr.at/go/pipeline/activity/PIP.github.joestrhq.PostBox_master.pr)
 [![Maintainability](https://api.codeclimate.com/v1/badges/1db7872f0dc6536049c6/maintainability)](https://codeclimate.com/github/joestrhq/PostBox/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/1db7872f0dc6536049c6/test_coverage)](https://codeclimate.com/github/joestrhq/PostBox/test_coverage)
 [![License](https://img.shields.io/static/v1?label=License&message=MIT&color=blue)](https://github.com/joestrhq/PostBox/blob/master/LICENSE)
 [![Matrix](https://img.shields.io/matrix/joestrhq.general:matrix.org?color=0dbd8b&logo=matrix)](https://matrix.to/#/#joestrhq.general:matrix.org)
 
 ## About
-PostBox is a Spigot plugin, which gives you the possibility to send items to other players.
+PostBox is a Spigot/Folia plugin, which gives you the possibility to send items to other players.
 
 ## Installation
 
