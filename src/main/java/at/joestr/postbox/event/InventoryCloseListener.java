@@ -23,8 +23,12 @@
 //
 package at.joestr.postbox.event;
 
+import at.joestr.javacommon.foliautils.FoliaUtils;
 import at.joestr.postbox.PostBoxPlugin;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,21 +41,38 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
  */
 public class InventoryCloseListener implements Listener {
 
+  private static final Logger LOG = Logger.getLogger(InventoryCloseListener.class.getName());
+
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
   public void handle(InventoryCloseEvent event) {
     final UUID playerUuid = event.getPlayer().getUniqueId();
 
-    boolean hasBeenRemoved = PostBoxPlugin.getInstance()
-      .getInventoryMappings()
-      .removeIf(mapping -> mapping.getLeft().equals(playerUuid));
+    boolean hasBeenRemoved
+      = PostBoxPlugin.getInstance()
+        .getInventoryMappings()
+        .removeIf(mapping -> mapping.getLeft().equals(playerUuid));
 
     if (hasBeenRemoved) {
-      Bukkit.getScheduler().runTaskLater(PostBoxPlugin.getInstance(), () -> {
-        Player player = Bukkit.getPlayer(playerUuid);
-        if (player != null && player.isOnline()) {
-          player.updateInventory();
+      FoliaUtils.scheduleAsync(
+        PostBoxPlugin.getInstance(),
+        () -> {
+          try {
+            Thread.sleep(1000); // Wait one (1) second
+          } catch (InterruptedException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+          }
+          Player player = Bukkit.getPlayer(playerUuid);
+          if (player != null && player.isOnline()) {
+            FoliaUtils.scheduleSyncForEntity(
+              PostBoxPlugin.getInstance(),
+              player,
+              () -> {
+                player.updateInventory();
+              }
+            );
+          }
         }
-      }, 1);
+      );
     }
   }
 }

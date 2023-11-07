@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>    
   <groupId>at.joestr</groupId>
   <artifactId>postbox</artifactId>
-  <version>1.2.7</version>
+  <version>1.2.8</version>
   <packaging>jar</packaging>
     
   <name>PostBox</name>
@@ -122,11 +122,22 @@
   
   <dependencies>
     <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.18.1-R0.1-SNAPSHOT</version>
-      <type>jar</type>
+      <groupId>dev.folia</groupId>
+      <artifactId>folia-api</artifactId>
+      <version>1.20.1-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>at.joestr.javacommon</groupId>
+      <artifactId>foliautils</artifactId>
+      <version>0.3.2-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.md-5</groupId>
+      <artifactId>bungeecord-chat</artifactId>
+      <version>1.20-R0.2-SNAPSHOT</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.vdurmont</groupId>
@@ -192,17 +203,17 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.1</version>
+        <version>3.4.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.0.0-M1</version>
+        <version>4.0.0-SNAPSHOT</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.11.0</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
@@ -242,9 +253,18 @@
                   <include>com.vdurmont:semver4j</include>
                   <include>org.enginehub:squirrelid</include>
                   <include>org.bstats:*</include>
+                  <include>at.joestr.javacommon:foliautils</include>
                 </includes>
               </artifactSet>
               <relocations>
+                <relocation>
+                  <pattern>net.md-5.bungeecord-chat</pattern>
+                  <shadedPattern>at.joestr.postbox.zzzthirdpartylib.net.md-5.bungeecord-chat</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>at.joestr.javacommon.foliautils</pattern>
+                  <shadedPattern>at.joestr.postbox.zzzthirdpartylib.at.joestr.javacommon.foliautils</shadedPattern>
+                </relocation>
                 <relocation>
                   <pattern>com.j256.ormlite</pattern>
                   <shadedPattern>at.joestr.postbox.zzzthirdpartylib.com.j256.ormlite</shadedPattern>
@@ -266,7 +286,7 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
+      <!--<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jarsigner-plugin</artifactId>
         <version>3.0.0</version>
@@ -290,8 +310,8 @@
             <include>*.jar</include>
           </includes>
         </configuration>
-      </plugin>
-      <!--<plugin>
+      </plugin>-->
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
         <version>1.6</version>
@@ -304,7 +324,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>-->
+      </plugin>
     </plugins>
   </build>
   

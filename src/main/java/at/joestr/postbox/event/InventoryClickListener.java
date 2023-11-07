@@ -23,6 +23,7 @@
 //
 package at.joestr.postbox.event;
 
+import at.joestr.javacommon.foliautils.FoliaUtils;
 import at.joestr.postbox.PostBoxPlugin;
 import at.joestr.postbox.configuration.CurrentEntries;
 import at.joestr.postbox.configuration.DatabaseConfiguration;
@@ -95,11 +96,13 @@ public class InventoryClickListener implements Listener {
     final int rawEventSlot = event.getRawSlot();
     event.setCancelled(true);
 
-    Bukkit.getScheduler().runTaskAsynchronously(PostBoxPlugin.getInstance(), () -> {
-      PostBoxModel postBoxModelEntry = null;
+    FoliaUtils.scheduleAsync(
+      PostBoxPlugin.getInstance(),
+      () -> {
+        PostBoxModel postBoxModelEntry = null;
 
-      try {
-        postBoxModelEntry
+        try {
+          postBoxModelEntry
           = DatabaseConfiguration.getInstance()
             .getPostBoxDao()
             .queryBuilder()
@@ -107,56 +110,59 @@ public class InventoryClickListener implements Listener {
             .eq(
               "receiver",
               PostBoxPlugin.getInstance().getInventoryMappings().stream()
-                .filter(t -> t.getLeft().equals(player.getUniqueId()))
+                .filter(x -> x.getLeft().equals(player.getUniqueId()))
                 .findFirst()
                 .get()
                 .getRight())
             .query()
             .get(rawEventSlot);
-      } catch (SQLException ex) {
-        LOGGER.log(Level.SEVERE, null, ex);
-        return;
-      }
-
-      try {
-        DeleteBuilder<PostBoxModel, String> deleteBuilder
-          = DatabaseConfiguration.getInstance().getPostBoxDao().deleteBuilder();
-        deleteBuilder.where().eq("id", postBoxModelEntry.getId());
-        deleteBuilder.delete();
-      } catch (SQLException ex) {
-        LOGGER.log(Level.SEVERE, null, ex);
-        return;
-      }
-
-      // Circumvent
-      final PostBoxModel targetEntry = postBoxModelEntry;
-
-      Bukkit.getScheduler().runTask(PostBoxPlugin.getInstance(), () -> {
-        player.setItemOnCursor(null);
-        player.getInventory().addItem(targetEntry.getItemStack());
-
-        Optional<Triple<UUID, Inventory, UUID>> tempForInventoryResolution
-          = PostBoxPlugin.getInstance().getInventoryMappings().stream()
-            .filter(t -> t.getLeft().equals(player.getUniqueId())).findFirst();
-
-        if (tempForInventoryResolution.isEmpty()) {
+        } catch (SQLException ex) {
+          LOGGER.log(Level.SEVERE, null, ex);
           return;
         }
 
-        Inventory postBoxInventory
-          = tempForInventoryResolution.get().getMiddle();
-
-        postBoxInventory.setItem(rawEventSlot, new ItemStack(Material.AIR));
-        ItemStack[] contents = postBoxInventory.getContents();
-        postBoxInventory.clear();
-
-        for (ItemStack i : contents) {
-          if (i == null) {
-            continue;
-          }
-          postBoxInventory.addItem(i);
+        try {
+          DeleteBuilder<PostBoxModel, String> deleteBuilder
+          = DatabaseConfiguration.getInstance().getPostBoxDao().deleteBuilder();
+          deleteBuilder.where().eq("id", postBoxModelEntry.getId());
+          deleteBuilder.delete();
+        } catch (SQLException ex) {
+          LOGGER.log(Level.SEVERE, null, ex);
+          return;
         }
+
+        // Circumvent
+        final PostBoxModel targetEntry = postBoxModelEntry;
+
+        FoliaUtils.scheduleSyncForEntity(
+          PostBoxPlugin.getInstance(),
+          player,
+          () -> {
+            player.setItemOnCursor(null);
+            player.getInventory().addItem(targetEntry.getItemStack());
+
+            Optional<Triple<UUID, Inventory, UUID>> tempForInventoryResolution
+            = PostBoxPlugin.getInstance().getInventoryMappings().stream()
+              .filter(t3 -> t3.getLeft().equals(player.getUniqueId()))
+              .findFirst();
+
+            if (tempForInventoryResolution.isEmpty()) {
+              return;
+            }
+
+            Inventory postBoxInventory = tempForInventoryResolution.get().getMiddle();
+
+            postBoxInventory.setItem(rawEventSlot, new ItemStack(Material.AIR));
+            ItemStack[] contents = postBoxInventory.getContents();
+            postBoxInventory.clear();
+
+            for (ItemStack i : contents) {
+              if (i == null) {
+                continue;
+              }
+              postBoxInventory.addItem(i);
+            }
+          });
       });
-    });
   }
 }
