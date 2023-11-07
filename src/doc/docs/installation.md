@@ -2,9 +2,12 @@
 
 Use following table to identify the version which is compatible for your Spigot server:  
 
+## Spigot
+
 |Plugin version         |Server versions tested|Download                                                                                                     |
 |-----------------------|----------------------|-------------------------------------------------------------------------------------------------------------|
-|1.2.7 (**recommended**)|1.19.3                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.7/postbox-1.2.7-shaded.jar)|
+|1.2.8 (**recommended**)|1.20.2                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.8/postbox-1.2.8-shaded.jar)|
+|1.2.7                  |1.19.3                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.7/postbox-1.2.7-shaded.jar)|
 |1.2.6                  |1.19.3                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.6/postbox-1.2.6-shaded.jar)|
 |1.2.5                  |1.19.3                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.5/postbox-1.2.5-shaded.jar)|
 |1.2.4                  |1.19.2                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.4/postbox-1.2.4-shaded.jar)|
@@ -14,6 +17,12 @@ Use following table to identify the version which is compatible for your Spigot 
 |1.2.0                  |1.19.2                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.0/postbox-1.2.0-shaded.jar)|
 |1.1.0                  |1.19.2                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.1.0/postbox-1.1.0-shaded.jar)|
 |1.0.0                  |1.18.1,1.19.1         |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.0.0/postbox-1.0.0-shaded.jar)|
+
+## Folia
+
+|Plugin version         |Server versions tested|Download                                                                                                     |
+|-----------------------|----------------------|-------------------------------------------------------------------------------------------------------------|
+|1.2.8 (**recommended**)|1.20.2                |[Download from GitHub](https://github.com/joestrhq/PostBox/releases/download/v1.2.8/postbox-1.2.8-shaded.jar)|
 
 Then download matching version of the plugin.  
   
